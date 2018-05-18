@@ -1,0 +1,4849 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your New Train</title>
+  <meta property="og:title" content="Find your new train time" />
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <style>
+  .ui-autocomplete-loading {
+   
+  }
+
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+
+startingStationSelected = "none";
+endingStationSelected = "none";
+departureTimeSelected = "none";
+
+
+function checkAndSend(departureTime, from, to){
+
+  var callURL = "https://api.tfl.gov.uk/Journey/JourneyResults/"+from+"/to/"+to+"?nationalSearch=true&date=20180521&time="+departureTime+"&timeIs=Departing&mode=national-rail%2C%20overground";
+
+  console.log(callURL);
+
+       $.getJSON(callURL, function(result){
+        
+        var journeyArray = result.journeys;
+        var departureTimeOneRaw = journeyArray[0].startDateTime;
+        var departureTimeTwoRaw = journeyArray[1].startDateTime;
+        var departureTimeThreeRaw = journeyArray[2].startDateTime;
+
+
+        var departureTimeOne = processTimeArray(departureTimeOneRaw);
+        var departureTimeTwo = processTimeArray(departureTimeTwoRaw);
+        var departureTimeThree = processTimeArray(departureTimeThreeRaw);
+
+        console.log(departureTimeOne);
+        console.log(departureTimeTwo);
+        console.log(departureTimeThree);
+
+        var finalMessage = "Your new train times are... "+departureTimeOne+", "+departureTimeTwo+" and "+departureTimeThree;
+
+        $( "#title" ).empty();
+        $( "#subtitle" ).replaceWith( finalMessage );
+        $( "#buttonDiv" ).empty();
+        $( "#startBox" ).empty();
+        $( "#endBox" ).empty();
+        $( "#timeBoxContainer" ).empty();
+
+
+    });
+
+}
+
+function processTimeArray(rawTime){
+
+    var departureTimeOneProcessedPartOne = rawTime.split("T");
+
+    var departureTimeOneProcessedPartTwo = departureTimeOneProcessedPartOne[1].split(":");
+
+    var processedTime = departureTimeOneProcessedPartTwo[0]+":"+departureTimeOneProcessedPartTwo[1];
+
+    return processedTime
+
+}
+
+
+  $( function() {
+
+ $('#submitButton').click(function() {
+
+
+
+  if (startingStationSelected === "none") {
+
+    alert("Please select a departure station");
+
+  }else if (endingStationSelected === "none") {
+
+    alert("Please select a station to travel to");
+
+
+  }else if (departureTimeSelected === "none") {
+
+    alert("Please select a departure time");
+
+  }else{
+
+    checkAndSend(departureTimeSelected, startingStationSelected, endingStationSelected);
+
+  }
+
+
+  
+
+
+    });
+
+
+    function log( message ) {
+      $( "<div>" ).text( message ).prependTo( "#log" );
+      $( "#log" ).scrollTop( 0 );
+    }
+
+    //ending station below
+
+        $( "#endingStation" ).autocomplete({
+      source: [
+  {
+    "id": 1001001,
+    "label": "ABBEY WOOD",
+    "value": "ABBEY WOOD",
+    "stationNameEncoded": "ABBEY%20WOOD"
+  },
+  {
+    "id": 90000115,
+    "label": "ALDRINGTON",
+    "value": "ALDRINGTON",
+    "stationNameEncoded": "ALDRINGTON"
+  },
+  {
+    "id": 1001005,
+    "label": "ALEXANDRA PALACE",
+    "value": "ALEXANDRA PALACE",
+    "stationNameEncoded": "ALEXANDRA%20PALACE"
+  },
+  {
+    "id": 90000171,
+    "label": "AMBERLEY",
+    "value": "AMBERLEY",
+    "stationNameEncoded": "AMBERLEY"
+  },
+  {
+    "id": 1001007,
+    "label": "ANERLEY",
+    "value": "ANERLEY",
+    "stationNameEncoded": "ANERLEY"
+  },
+  {
+    "id": 1001446,
+    "label": "ANGMERING",
+    "value": "ANGMERING",
+    "stationNameEncoded": "ANGMERING"
+  },
+  {
+    "id": 1001450,
+    "label": "APPLEDORE",
+    "value": "APPLEDORE",
+    "stationNameEncoded": "APPLEDORE"
+  },
+  {
+    "id": 1001864,
+    "label": "ARLESEY",
+    "value": "ARLESEY",
+    "stationNameEncoded": "ARLESEY"
+  },
+  {
+    "id": 1001474,
+    "label": "ARUNDEL",
+    "value": "ARUNDEL",
+    "stationNameEncoded": "ARUNDEL"
+  },
+  {
+    "id": 1000994,
+    "label": "ASHFORD INTERNATIONAL",
+    "value": "ASHFORD INTERNATIONAL",
+    "stationNameEncoded": "ASHFORD%20INTERNATIONAL"
+  },
+  {
+    "id": 1001548,
+    "label": "ASHTEAD",
+    "value": "ASHTEAD",
+    "stationNameEncoded": "ASHTEAD"
+  },
+  {
+    "id": 90000300,
+    "label": "ASHURST",
+    "value": "ASHURST",
+    "stationNameEncoded": "ASHURST"
+  },
+  {
+    "id": 1000563,
+    "label": "ASHWELL & MORDEN",
+    "value": "ASHWELL & MORDEN",
+    "stationNameEncoded": "ASHWELL%20%26%20MORDEN"
+  },
+  {
+    "id": 90000379,
+    "label": "BALCOMBE",
+    "value": "BALCOMBE",
+    "stationNameEncoded": "BALCOMBE"
+  },
+  {
+    "id": 1000721,
+    "label": "BALDOCK",
+    "value": "BALDOCK",
+    "stationNameEncoded": "BALDOCK"
+  },
+  {
+    "id": 1000012,
+    "label": "BALHAM",
+    "value": "BALHAM",
+    "stationNameEncoded": "BALHAM"
+  },
+  {
+    "id": 1001552,
+    "label": "BANSTEAD",
+    "value": "BANSTEAD",
+    "stationNameEncoded": "BANSTEAD"
+  },
+  {
+    "id": 1001452,
+    "label": "BARNHAM",
+    "value": "BARNHAM",
+    "stationNameEncoded": "BARNHAM"
+  },
+  {
+    "id": 90000437,
+    "label": "BAT & BALL",
+    "value": "BAT & BALL",
+    "stationNameEncoded": "BAT%20%26%20BALL"
+  },
+  {
+    "id": 1001016,
+    "label": "BATTERSEA PARK",
+    "value": "BATTERSEA PARK",
+    "stationNameEncoded": "BATTERSEA%20PARK"
+  },
+  {
+    "id": 1000476,
+    "label": "BAYFORD",
+    "value": "BAYFORD",
+    "stationNameEncoded": "BAYFORD"
+  },
+  {
+    "id": 1001017,
+    "label": "BECKENHAM HILL",
+    "value": "BECKENHAM HILL",
+    "stationNameEncoded": "BECKENHAM%20HILL"
+  },
+  {
+    "id": 1001018,
+    "label": "BECKENHAM JUNCTION",
+    "value": "BECKENHAM JUNCTION",
+    "stationNameEncoded": "BECKENHAM%20JUNCTION"
+  },
+  {
+    "id": 90000519,
+    "label": "BEDFORD",
+    "value": "BEDFORD",
+    "stationNameEncoded": "BEDFORD"
+  },
+  {
+    "id": 90000480,
+    "label": "BEDHAMPTON",
+    "value": "BEDHAMPTON",
+    "stationNameEncoded": "BEDHAMPTON"
+  },
+  {
+    "id": 1001019,
+    "label": "BELLINGHAM",
+    "value": "BELLINGHAM",
+    "stationNameEncoded": "BELLINGHAM"
+  },
+  {
+    "id": 1001020,
+    "label": "BELMONT",
+    "value": "BELMONT",
+    "stationNameEncoded": "BELMONT"
+  },
+  {
+    "id": 1001021,
+    "label": "BELVEDERE",
+    "value": "BELVEDERE",
+    "stationNameEncoded": "BELVEDERE"
+  },
+  {
+    "id": 1001459,
+    "label": "BERWICK",
+    "value": "BERWICK",
+    "stationNameEncoded": "BERWICK"
+  },
+  {
+    "id": 1001329,
+    "label": "BEXHILL",
+    "value": "BEXHILL",
+    "stationNameEncoded": "BEXHILL"
+  },
+  {
+    "id": 1001026,
+    "label": "BICKLEY",
+    "value": "BICKLEY",
+    "stationNameEncoded": "BICKLEY"
+  },
+  {
+    "id": 90000603,
+    "label": "BIGGLESWADE",
+    "value": "BIGGLESWADE",
+    "stationNameEncoded": "BIGGLESWADE"
+  },
+  {
+    "id": 1001461,
+    "label": "BILLINGSHURST",
+    "value": "BILLINGSHURST",
+    "stationNameEncoded": "BILLINGSHURST"
+  },
+  {
+    "id": 1001027,
+    "label": "BIRKBECK",
+    "value": "BIRKBECK",
+    "stationNameEncoded": "BIRKBECK"
+  },
+  {
+    "id": 1001469,
+    "label": "BISHOPSTONE",
+    "value": "BISHOPSTONE",
+    "stationNameEncoded": "BISHOPSTONE"
+  },
+  {
+    "id": 90000614,
+    "label": "BITTERNE",
+    "value": "BITTERNE",
+    "stationNameEncoded": "BITTERNE"
+  },
+  {
+    "id": 1000023,
+    "label": "BLACKFRIARS",
+    "value": "BLACKFRIARS",
+    "stationNameEncoded": "BLACKFRIARS"
+  },
+  {
+    "id": 90000691,
+    "label": "BLETCHLEY",
+    "value": "BLETCHLEY",
+    "stationNameEncoded": "BLETCHLEY"
+  },
+  {
+    "id": 1001530,
+    "label": "BOGNOR REGIS",
+    "value": "BOGNOR REGIS",
+    "stationNameEncoded": "BOGNOR%20REGIS"
+  },
+  {
+    "id": 1001511,
+    "label": "BOOKHAM",
+    "value": "BOOKHAM",
+    "stationNameEncoded": "BOOKHAM"
+  },
+  {
+    "id": 1001353,
+    "label": "BOSHAM",
+    "value": "BOSHAM",
+    "stationNameEncoded": "BOSHAM"
+  },
+  {
+    "id": 1001031,
+    "label": "BOWES PARK",
+    "value": "BOWES PARK",
+    "stationNameEncoded": "BOWES%20PARK"
+  },
+  {
+    "id": 1001509,
+    "label": "BOXHILL & WESTHUMBLE",
+    "value": "BOXHILL & WESTHUMBLE",
+    "stationNameEncoded": "BOXHILL%20%26%20WESTHUMBLE"
+  },
+  {
+    "id": 90000103,
+    "label": "BRIGHTON",
+    "value": "BRIGHTON",
+    "stationNameEncoded": "BRIGHTON"
+  },
+  {
+    "id": 1001035,
+    "label": "BROCKLEY",
+    "value": "BROCKLEY",
+    "stationNameEncoded": "BROCKLEY"
+  },
+  {
+    "id": 1001037,
+    "label": "BROMLEY SOUTH",
+    "value": "BROMLEY SOUTH",
+    "stationNameEncoded": "BROMLEY%20SOUTH"
+  },
+  {
+    "id": 1000291,
+    "label": "BROOKMANS PARK",
+    "value": "BROOKMANS PARK",
+    "stationNameEncoded": "BROOKMANS%20PARK"
+  },
+  {
+    "id": 1001895,
+    "label": "BURGESS HILL",
+    "value": "BURGESS HILL",
+    "stationNameEncoded": "BURGESS%20HILL"
+  },
+  {
+    "id": 90001159,
+    "label": "BURSLEDON",
+    "value": "BURSLEDON",
+    "stationNameEncoded": "BURSLEDON"
+  },
+  {
+    "id": 1001898,
+    "label": "BUXTED",
+    "value": "BUXTED",
+    "stationNameEncoded": "BUXTED"
+  },
+  {
+    "id": 1001044,
+    "label": "CAMBRIDGE",
+    "value": "CAMBRIDGE",
+    "stationNameEncoded": "CAMBRIDGE"
+  },
+  {
+    "id": 1000040,
+    "label": "CANNON STREET",
+    "value": "CANNON STREET",
+    "stationNameEncoded": "CANNON%20STREET"
+  },
+  {
+    "id": 1001050,
+    "label": "CARSHALTON",
+    "value": "CARSHALTON",
+    "stationNameEncoded": "CARSHALTON"
+  },
+  {
+    "id": 1001050,
+    "label": "CARSHALTON BEECHES",
+    "value": "CARSHALTON BEECHES",
+    "stationNameEncoded": "CARSHALTON%20BEECHES"
+  },
+  {
+    "id": 1001539,
+    "label": "CATERHAM",
+    "value": "CATERHAM",
+    "stationNameEncoded": "CATERHAM"
+  },
+  {
+    "id": 1001054,
+    "label": "CATFORD",
+    "value": "CATFORD",
+    "stationNameEncoded": "CATFORD"
+  },
+  {
+    "id": 1000045,
+    "label": "CHARING CROSS",
+    "value": "CHARING CROSS",
+    "stationNameEncoded": "CHARING%20CROSS"
+  },
+  {
+    "id": 1001058,
+    "label": "CHARLTON",
+    "value": "CHARLTON",
+    "stationNameEncoded": "CHARLTON"
+  },
+  {
+    "id": 90001362,
+    "label": "CHATHAM",
+    "value": "CHATHAM",
+    "stationNameEncoded": "CHATHAM"
+  },
+  {
+    "id": 1001059,
+    "label": "CHEAM",
+    "value": "CHEAM",
+    "stationNameEncoded": "CHEAM"
+  },
+  {
+    "id": 1001574,
+    "label": "CHICHESTER",
+    "value": "CHICHESTER",
+    "stationNameEncoded": "CHICHESTER"
+  },
+  {
+    "id": 1001557,
+    "label": "CHIPSTEAD",
+    "value": "CHIPSTEAD",
+    "stationNameEncoded": "CHIPSTEAD"
+  },
+  {
+    "id": 90001448,
+    "label": "CHRISTS HOSPITAL",
+    "value": "CHRISTS HOSPITAL",
+    "stationNameEncoded": "CHRISTS%20HOSPITAL"
+  },
+  {
+    "id": 1001067,
+    "label": "CITY THAMESLINK",
+    "value": "CITY THAMESLINK",
+    "stationNameEncoded": "CITY%20THAMESLINK"
+  },
+  {
+    "id": 1001577,
+    "label": "CLANDON",
+    "value": "CLANDON",
+    "stationNameEncoded": "CLANDON"
+  },
+  {
+    "id": 1001068,
+    "label": "CLAPHAM HIGH STREET",
+    "value": "CLAPHAM HIGH STREET",
+    "stationNameEncoded": "CLAPHAM%20HIGH%20STREET"
+  },
+  {
+    "id": 1001069,
+    "label": "CLAPHAM JUNCTION",
+    "value": "CLAPHAM JUNCTION",
+    "stationNameEncoded": "CLAPHAM%20JUNCTION"
+  },
+  {
+    "id": 1001579,
+    "label": "COLLINGTON",
+    "value": "COLLINGTON",
+    "stationNameEncoded": "COLLINGTON"
+  },
+  {
+    "id": 1001583,
+    "label": "COODEN BEACH",
+    "value": "COODEN BEACH",
+    "stationNameEncoded": "COODEN%20BEACH"
+  },
+  {
+    "id": 1001586,
+    "label": "COOKSBRIDGE",
+    "value": "COOKSBRIDGE",
+    "stationNameEncoded": "COOKSBRIDGE"
+  },
+  {
+    "id": 90001719,
+    "label": "COSHAM",
+    "value": "COSHAM",
+    "stationNameEncoded": "COSHAM"
+  },
+  {
+    "id": 1001072,
+    "label": "COULSDON SOUTH",
+    "value": "COULSDON SOUTH",
+    "stationNameEncoded": "COULSDON%20SOUTH"
+  },
+  {
+    "id": 1001253,
+    "label": "COULSDON TOWN",
+    "value": "COULSDON TOWN",
+    "stationNameEncoded": "COULSDON%20TOWN"
+  },
+  {
+    "id": 1001588,
+    "label": "COWDEN",
+    "value": "COWDEN",
+    "stationNameEncoded": "COWDEN"
+  },
+  {
+    "id": 1001590,
+    "label": "CRAWLEY",
+    "value": "CRAWLEY",
+    "stationNameEncoded": "CRAWLEY"
+  },
+  {
+    "id": 1001074,
+    "label": "CREWS HILL",
+    "value": "CREWS HILL",
+    "stationNameEncoded": "CREWS%20HILL"
+  },
+  {
+    "id": 1001075,
+    "label": "CRICKLEWOOD",
+    "value": "CRICKLEWOOD",
+    "stationNameEncoded": "CRICKLEWOOD"
+  },
+  {
+    "id": 1001076,
+    "label": "CROFTON PARK",
+    "value": "CROFTON PARK",
+    "stationNameEncoded": "CROFTON%20PARK"
+  },
+  {
+    "id": 1001078,
+    "label": "CRYSTAL PALACE",
+    "value": "CRYSTAL PALACE",
+    "stationNameEncoded": "CRYSTAL%20PALACE"
+  },
+  {
+    "id": 1001504,
+    "label": "CUFFLEY",
+    "value": "CUFFLEY",
+    "stationNameEncoded": "CUFFLEY"
+  },
+  {
+    "id": 1001082,
+    "label": "DARTFORD",
+    "value": "DARTFORD",
+    "stationNameEncoded": "DARTFORD"
+  },
+  {
+    "id": 1001083,
+    "label": "DENMARK HILL",
+    "value": "DENMARK HILL",
+    "stationNameEncoded": "DENMARK%20HILL"
+  },
+  {
+    "id": 1001084,
+    "label": "DEPTFORD",
+    "value": "DEPTFORD",
+    "stationNameEncoded": "DEPTFORD"
+  },
+  {
+    "id": 90002197,
+    "label": "DOLEHAM",
+    "value": "DOLEHAM",
+    "stationNameEncoded": "DOLEHAM"
+  },
+  {
+    "id": 1001507,
+    "label": "DORKING",
+    "value": "DORKING",
+    "stationNameEncoded": "DORKING"
+  },
+  {
+    "id": 90002279,
+    "label": "DORMANS",
+    "value": "DORMANS",
+    "stationNameEncoded": "DORMANS"
+  },
+  {
+    "id": 90002290,
+    "label": "DOWNHAM MARKET",
+    "value": "DOWNHAM MARKET",
+    "stationNameEncoded": "DOWNHAM%20MARKET"
+  },
+  {
+    "id": 1001086,
+    "label": "DRAYTON PARK",
+    "value": "DRAYTON PARK",
+    "stationNameEncoded": "DRAYTON%20PARK"
+  },
+  {
+    "id": 90002418,
+    "label": "EARLSWOOD",
+    "value": "EARLSWOOD",
+    "stationNameEncoded": "EARLSWOOD"
+  },
+  {
+    "id": 1001089,
+    "label": "EAST CROYDON",
+    "value": "EAST CROYDON",
+    "stationNameEncoded": "EAST%20CROYDON"
+  },
+  {
+    "id": 1001090,
+    "label": "EAST DULWICH",
+    "value": "EAST DULWICH",
+    "stationNameEncoded": "EAST%20DULWICH"
+  },
+  {
+    "id": 90002488,
+    "label": "EAST GRINSTEAD",
+    "value": "EAST GRINSTEAD",
+    "stationNameEncoded": "EAST%20GRINSTEAD"
+  },
+  {
+    "id": 1001597,
+    "label": "EAST WORTHING",
+    "value": "EAST WORTHING",
+    "stationNameEncoded": "EAST%20WORTHING"
+  },
+  {
+    "id": 1000517,
+    "label": "EASTBOURNE",
+    "value": "EASTBOURNE",
+    "stationNameEncoded": "EASTBOURNE"
+  },
+  {
+    "id": 90002505,
+    "label": "EASTLEIGH",
+    "value": "EASTLEIGH",
+    "stationNameEncoded": "EASTLEIGH"
+  },
+  {
+    "id": 90002464,
+    "label": "EDENBRIDGE",
+    "value": "EDENBRIDGE",
+    "stationNameEncoded": "EDENBRIDGE"
+  },
+  {
+    "id": 90002464,
+    "label": "EDENBRIDGE TOWN",
+    "value": "EDENBRIDGE TOWN",
+    "stationNameEncoded": "EDENBRIDGE%20TOWN"
+  },
+  {
+    "id": 1001512,
+    "label": "EFFINGHAM JUNCTION",
+    "value": "EFFINGHAM JUNCTION",
+    "stationNameEncoded": "EFFINGHAM%20JUNCTION"
+  },
+  {
+    "id": 1000073,
+    "label": "ELEPHANT & CASTLE",
+    "value": "ELEPHANT & CASTLE",
+    "stationNameEncoded": "ELEPHANT%20%26%20CASTLE"
+  },
+  {
+    "id": 1001096,
+    "label": "ELSTREE & BOREHAMWOOD",
+    "value": "ELSTREE & BOREHAMWOOD",
+    "stationNameEncoded": "ELSTREE%20%26%20BOREHAMWOOD"
+  },
+  {
+    "id": 1001915,
+    "label": "ELY",
+    "value": "ELY",
+    "stationNameEncoded": "ELY"
+  },
+  {
+    "id": 90002573,
+    "label": "EMSWORTH",
+    "value": "EMSWORTH",
+    "stationNameEncoded": "EMSWORTH"
+  },
+  {
+    "id": 1001099,
+    "label": "ENFIELD CHASE",
+    "value": "ENFIELD CHASE",
+    "stationNameEncoded": "ENFIELD%20CHASE"
+  },
+  {
+    "id": 1001553,
+    "label": "EPSOM",
+    "value": "EPSOM",
+    "stationNameEncoded": "EPSOM"
+  },
+  {
+    "id": 1001553,
+    "label": "EPSOM DOWNS",
+    "value": "EPSOM DOWNS",
+    "stationNameEncoded": "EPSOM%20DOWNS"
+  },
+  {
+    "id": 1001602,
+    "label": "ERIDGE",
+    "value": "ERIDGE",
+    "stationNameEncoded": "ERIDGE"
+  },
+  {
+    "id": 1001102,
+    "label": "ERITH",
+    "value": "ERITH",
+    "stationNameEncoded": "ERITH"
+  },
+  {
+    "id": 1001103,
+    "label": "ESSEX ROAD",
+    "value": "ESSEX ROAD",
+    "stationNameEncoded": "ESSEX%20ROAD"
+  },
+  {
+    "id": 1001534,
+    "label": "EWELL EAST",
+    "value": "EWELL EAST",
+    "stationNameEncoded": "EWELL%20EAST"
+  },
+  {
+    "id": 90002663,
+    "label": "EYNSFORD",
+    "value": "EYNSFORD",
+    "stationNameEncoded": "EYNSFORD"
+  },
+  {
+    "id": 1001905,
+    "label": "FALMER",
+    "value": "FALMER",
+    "stationNameEncoded": "FALMER"
+  },
+  {
+    "id": 90002680,
+    "label": "FAREHAM",
+    "value": "FAREHAM",
+    "stationNameEncoded": "FAREHAM"
+  },
+  {
+    "id": 1000080,
+    "label": "FARRINGDON",
+    "value": "FARRINGDON",
+    "stationNameEncoded": "FARRINGDON"
+  },
+  {
+    "id": 1001610,
+    "label": "FAYGATE",
+    "value": "FAYGATE",
+    "stationNameEncoded": "FAYGATE"
+  },
+  {
+    "id": 1000083,
+    "label": "FINSBURY PARK",
+    "value": "FINSBURY PARK",
+    "stationNameEncoded": "FINSBURY%20PARK"
+  },
+  {
+    "id": 1001613,
+    "label": "FISHBOURNE",
+    "value": "FISHBOURNE",
+    "stationNameEncoded": "FISHBOURNE"
+  },
+  {
+    "id": 1001617,
+    "label": "FISHERSGATE",
+    "value": "FISHERSGATE",
+    "stationNameEncoded": "FISHERSGATE"
+  },
+  {
+    "id": 90002748,
+    "label": "FLITWICK",
+    "value": "FLITWICK",
+    "stationNameEncoded": "FLITWICK"
+  },
+  {
+    "id": 1000226,
+    "label": "FORD",
+    "value": "FORD",
+    "stationNameEncoded": "FORD"
+  },
+  {
+    "id": 1001112,
+    "label": "FOREST HILL",
+    "value": "FOREST HILL",
+    "stationNameEncoded": "FOREST%20HILL"
+  },
+  {
+    "id": 1001908,
+    "label": "FOXTON",
+    "value": "FOXTON",
+    "stationNameEncoded": "FOXTON"
+  },
+  {
+    "id": 90002812,
+    "label": "FRATTON",
+    "value": "FRATTON",
+    "stationNameEncoded": "FRATTON"
+  },
+  {
+    "id": 1000932,
+    "label": "GATWICK",
+    "value": "GATWICK",
+    "stationNameEncoded": "GATWICK"
+  },
+  {
+    "id": 90002990,
+    "label": "GILLINGHAM",
+    "value": "GILLINGHAM",
+    "stationNameEncoded": "GILLINGHAM"
+  },
+  {
+    "id": 1001116,
+    "label": "GIPSY HILL",
+    "value": "GIPSY HILL",
+    "stationNameEncoded": "GIPSY%20HILL"
+  },
+  {
+    "id": 90003022,
+    "label": "GLYNDE",
+    "value": "GLYNDE",
+    "stationNameEncoded": "GLYNDE"
+  },
+  {
+    "id": 90003051,
+    "label": "GODSTONE",
+    "value": "GODSTONE",
+    "stationNameEncoded": "GODSTONE"
+  },
+  {
+    "id": 1001118,
+    "label": "GORDON HILL",
+    "value": "GORDON HILL",
+    "stationNameEncoded": "GORDON%20HILL"
+  },
+  {
+    "id": 1001626,
+    "label": "GORING BY SEA",
+    "value": "GORING BY SEA",
+    "stationNameEncoded": "GORING%20BY%20SEA"
+  },
+  {
+    "id": 1001341,
+    "label": "GRANGE PARK",
+    "value": "GRANGE PARK",
+    "stationNameEncoded": "GRANGE%20PARK"
+  },
+  {
+    "id": 1001540,
+    "label": "GRAVESEND",
+    "value": "GRAVESEND",
+    "stationNameEncoded": "GRAVESEND"
+  },
+  {
+    "id": 1001543,
+    "label": "GREENHITHE",
+    "value": "GREENHITHE",
+    "stationNameEncoded": "GREENHITHE"
+  },
+  {
+    "id": 1001123,
+    "label": "GREENWICH",
+    "value": "GREENWICH",
+    "stationNameEncoded": "GREENWICH"
+  },
+  {
+    "id": 1001424,
+    "label": "GUILDFORD",
+    "value": "GUILDFORD",
+    "stationNameEncoded": "GUILDFORD"
+  },
+  {
+    "id": 1001126,
+    "label": "HACKBRIDGE",
+    "value": "HACKBRIDGE",
+    "stationNameEncoded": "HACKBRIDGE"
+  },
+  {
+    "id": 1001130,
+    "label": "HADLEY WOOD",
+    "value": "HADLEY WOOD",
+    "stationNameEncoded": "HADLEY%20WOOD"
+  },
+  {
+    "id": 1001130,
+    "label": "HADLEY WOOD",
+    "value": "HADLEY WOOD",
+    "stationNameEncoded": "HADLEY%20WOOD"
+  },
+  {
+    "id": 1001631,
+    "label": "HAM STREET",
+    "value": "HAM STREET",
+    "stationNameEncoded": "HAM%20STREET"
+  },
+  {
+    "id": 90003522,
+    "label": "HAMBLE",
+    "value": "HAMBLE",
+    "stationNameEncoded": "HAMBLE"
+  },
+  {
+    "id": 1001629,
+    "label": "HAMPDEN PARK",
+    "value": "HAMPDEN PARK",
+    "stationNameEncoded": "HAMPDEN%20PARK"
+  },
+  {
+    "id": 1001144,
+    "label": "HARLINGTON",
+    "value": "HARLINGTON",
+    "stationNameEncoded": "HARLINGTON"
+  },
+  {
+    "id": 1000480,
+    "label": "HARPENDEN",
+    "value": "HARPENDEN",
+    "stationNameEncoded": "HARPENDEN"
+  },
+  {
+    "id": 1001139,
+    "label": "HARRINGAY",
+    "value": "HARRINGAY",
+    "stationNameEncoded": "HARRINGAY"
+  },
+  {
+    "id": 1000101,
+    "label": "HARROW & WEALDSTONE",
+    "value": "HARROW & WEALDSTONE",
+    "stationNameEncoded": "HARROW%20%26%20WEALDSTONE"
+  },
+  {
+    "id": 1001633,
+    "label": "HASSOCKS",
+    "value": "HASSOCKS",
+    "stationNameEncoded": "HASSOCKS"
+  },
+  {
+    "id": 1001416,
+    "label": "HASTINGS",
+    "value": "HASTINGS",
+    "stationNameEncoded": "HASTINGS"
+  },
+  {
+    "id": 1026129,
+    "label": "HATFIELD",
+    "value": "HATFIELD",
+    "stationNameEncoded": "HATFIELD"
+  },
+  {
+    "id": 90003325,
+    "label": "HAVANT",
+    "value": "HAVANT",
+    "stationNameEncoded": "HAVANT"
+  },
+  {
+    "id": 1001143,
+    "label": "HAYDONS ROAD",
+    "value": "HAYDONS ROAD",
+    "stationNameEncoded": "HAYDONS%20ROAD"
+  },
+  {
+    "id": 1001418,
+    "label": "HAYWARDS HEATH",
+    "value": "HAYWARDS HEATH",
+    "stationNameEncoded": "HAYWARDS%20HEATH"
+  },
+  {
+    "id": 1000812,
+    "label": "HEMEL HEMPSTEAD",
+    "value": "HEMEL HEMPSTEAD",
+    "stationNameEncoded": "HEMEL%20HEMPSTEAD"
+  },
+  {
+    "id": 1001148,
+    "label": "HENDON",
+    "value": "HENDON",
+    "stationNameEncoded": "HENDON"
+  },
+  {
+    "id": 1001149,
+    "label": "HERNE HILL",
+    "value": "HERNE HILL",
+    "stationNameEncoded": "HERNE%20HILL"
+  },
+  {
+    "id": 1026132,
+    "label": "HERTFORD NORTH",
+    "value": "HERTFORD NORTH",
+    "stationNameEncoded": "HERTFORD%20NORTH"
+  },
+  {
+    "id": 90003422,
+    "label": "HEVER",
+    "value": "HEVER",
+    "stationNameEncoded": "HEVER"
+  },
+  {
+    "id": 1001150,
+    "label": "HIGHAM",
+    "value": "HIGHAM",
+    "stationNameEncoded": "HIGHAM"
+  },
+  {
+    "id": 1000108,
+    "label": "HIGHBURY & ISLINGTON",
+    "value": "HIGHBURY & ISLINGTON",
+    "stationNameEncoded": "HIGHBURY%20%26%20ISLINGTON"
+  },
+  {
+    "id": 90003453,
+    "label": "HILSEA",
+    "value": "HILSEA",
+    "stationNameEncoded": "HILSEA"
+  },
+  {
+    "id": 1000465,
+    "label": "HITCHIN",
+    "value": "HITCHIN",
+    "stationNameEncoded": "HITCHIN"
+  },
+  {
+    "id": 90003489,
+    "label": "HOLMWOOD",
+    "value": "HOLMWOOD",
+    "stationNameEncoded": "HOLMWOOD"
+  },
+  {
+    "id": 1001154,
+    "label": "HONOR OAK PARK",
+    "value": "HONOR OAK PARK",
+    "stationNameEncoded": "HONOR%20OAK%20PARK"
+  },
+  {
+    "id": 1000049,
+    "label": "HORLEY",
+    "value": "HORLEY",
+    "stationNameEncoded": "HORLEY"
+  },
+  {
+    "id": 1001155,
+    "label": "HORNSEY",
+    "value": "HORNSEY",
+    "stationNameEncoded": "HORNSEY"
+  },
+  {
+    "id": 1001640,
+    "label": "HORSHAM",
+    "value": "HORSHAM",
+    "stationNameEncoded": "HORSHAM"
+  },
+  {
+    "id": 1001513,
+    "label": "HORSLEY",
+    "value": "HORSLEY",
+    "stationNameEncoded": "HORSLEY"
+  },
+  {
+    "id": 90003633,
+    "label": "HOVE",
+    "value": "HOVE",
+    "stationNameEncoded": "HOVE"
+  },
+  {
+    "id": 1001917,
+    "label": "HUNTINGDON",
+    "value": "HUNTINGDON",
+    "stationNameEncoded": "HUNTINGDON"
+  },
+  {
+    "id": 1001643,
+    "label": "HURST GREEN",
+    "value": "HURST GREEN",
+    "stationNameEncoded": "HURST%20GREEN"
+  },
+  {
+    "id": 90003386,
+    "label": "IFIELD",
+    "value": "IFIELD",
+    "stationNameEncoded": "IFIELD"
+  },
+  {
+    "id": 1001347,
+    "label": "IMPERIAL WHARF",
+    "value": "IMPERIAL WHARF",
+    "stationNameEncoded": "IMPERIAL%20WHARF"
+  },
+  {
+    "id": 1001159,
+    "label": "KENLEY",
+    "value": "KENLEY",
+    "stationNameEncoded": "KENLEY"
+  },
+  {
+    "id": 1000170,
+    "label": "KENSINGTON OLYMPIA",
+    "value": "KENSINGTON OLYMPIA",
+    "stationNameEncoded": "KENSINGTON%20OLYMPIA"
+  },
+  {
+    "id": 1001163,
+    "label": "KENT HOUSE",
+    "value": "KENT HOUSE",
+    "stationNameEncoded": "KENT%20HOUSE"
+  },
+  {
+    "id": 1000123,
+    "label": "KENTISH TOWN",
+    "value": "KENTISH TOWN",
+    "stationNameEncoded": "KENTISH%20TOWN"
+  },
+  {
+    "id": 1000129,
+    "label": "KINGS CROSS",
+    "value": "KINGS CROSS",
+    "stationNameEncoded": "KINGS%20CROSS"
+  },
+  {
+    "id": 90004091,
+    "label": "KINGS LYNN",
+    "value": "KINGS LYNN",
+    "stationNameEncoded": "KINGS%20LYNN"
+  },
+  {
+    "id": 1001558,
+    "label": "KINGSWOOD",
+    "value": "KINGSWOOD",
+    "stationNameEncoded": "KINGSWOOD"
+  },
+  {
+    "id": 1000468,
+    "label": "KNEBWORTH",
+    "value": "KNEBWORTH",
+    "stationNameEncoded": "KNEBWORTH"
+  },
+  {
+    "id": 1001653,
+    "label": "LANCING",
+    "value": "LANCING",
+    "stationNameEncoded": "LANCING"
+  },
+  {
+    "id": 90004300,
+    "label": "LEAGRAVE",
+    "value": "LEAGRAVE",
+    "stationNameEncoded": "LEAGRAVE"
+  },
+  {
+    "id": 1001510,
+    "label": "LEATHERHEAD",
+    "value": "LEATHERHEAD",
+    "stationNameEncoded": "LEATHERHEAD"
+  },
+  {
+    "id": 1001218,
+    "label": "LEIGH",
+    "value": "LEIGH",
+    "stationNameEncoded": "LEIGH"
+  },
+  {
+    "id": 1000523,
+    "label": "LEIGHTON BUZZARD",
+    "value": "LEIGHTON BUZZARD",
+    "stationNameEncoded": "LEIGHTON%20BUZZARD"
+  },
+  {
+    "id": 1000460,
+    "label": "LETCHWORTH GARDEN CITY",
+    "value": "LETCHWORTH GARDEN CITY",
+    "stationNameEncoded": "LETCHWORTH%20GARDEN%20CITY"
+  },
+  {
+    "id": 1001661,
+    "label": "LEWES",
+    "value": "LEWES",
+    "stationNameEncoded": "LEWES"
+  },
+  {
+    "id": 90004408,
+    "label": "LINGFIELD",
+    "value": "LINGFIELD",
+    "stationNameEncoded": "LINGFIELD"
+  },
+  {
+    "id": 1001665,
+    "label": "LITTLEHAMPTON",
+    "value": "LITTLEHAMPTON",
+    "stationNameEncoded": "LITTLEHAMPTON"
+  },
+  {
+    "id": 1001669,
+    "label": "LITTLEHAVEN",
+    "value": "LITTLEHAVEN",
+    "stationNameEncoded": "LITTLEHAVEN"
+  },
+  {
+    "id": 1001927,
+    "label": "LITTLEPORT",
+    "value": "LITTLEPORT",
+    "stationNameEncoded": "LITTLEPORT"
+  },
+  {
+    "id": 1000139,
+    "label": "LONDON BRIDGE",
+    "value": "LONDON BRIDGE",
+    "stationNameEncoded": "LONDON%20BRIDGE"
+  },
+  {
+    "id": 90000896,
+    "label": "LONDON ROAD (BRIGHTON)",
+    "value": "LONDON ROAD (BRIGHTON)",
+    "stationNameEncoded": "LONDON%20ROAD%20(BRIGHTON)"
+  },
+  {
+    "id": 90004580,
+    "label": "LONDON ROAD (GUILDFORD)",
+    "value": "LONDON ROAD (GUILDFORD)",
+    "stationNameEncoded": "LONDON%20ROAD%20(GUILDFORD)"
+  },
+  {
+    "id": 1001184,
+    "label": "LOUGHBOROUGH JUNCTION",
+    "value": "LOUGHBOROUGH JUNCTION",
+    "stationNameEncoded": "LOUGHBOROUGH%20JUNCTION"
+  },
+  {
+    "id": 1001678,
+    "label": "LUTON",
+    "value": "LUTON",
+    "stationNameEncoded": "LUTON"
+  },
+  {
+    "id": 1001678,
+    "label": "LUTON AIRPORT PARKWAY",
+    "value": "LUTON AIRPORT PARKWAY",
+    "stationNameEncoded": "LUTON%20AIRPORT%20PARKWAY"
+  },
+  {
+    "id": 1001490,
+    "label": "MAIDSTONE BARRACKS",
+    "value": "MAIDSTONE BARRACKS",
+    "stationNameEncoded": "MAIDSTONE%20BARRACKS"
+  },
+  {
+    "id": 1001487,
+    "label": "MAIDSTONE EAST",
+    "value": "MAIDSTONE EAST",
+    "stationNameEncoded": "MAIDSTONE%20EAST"
+  },
+  {
+    "id": 90005115,
+    "label": "MAIDSTONE WEST",
+    "value": "MAIDSTONE WEST",
+    "stationNameEncoded": "MAIDSTONE%20WEST"
+  },
+  {
+    "id": 1001192,
+    "label": "MAZE HILL",
+    "value": "MAZE HILL",
+    "stationNameEncoded": "MAZE%20HILL"
+  },
+  {
+    "id": 90004797,
+    "label": "MELDRETH",
+    "value": "MELDRETH",
+    "stationNameEncoded": "MELDRETH"
+  },
+  {
+    "id": 1001527,
+    "label": "MERSTHAM",
+    "value": "MERSTHAM",
+    "stationNameEncoded": "MERSTHAM"
+  },
+  {
+    "id": 1001193,
+    "label": "MILL HILL BROADWAY",
+    "value": "MILL HILL BROADWAY",
+    "stationNameEncoded": "MILL%20HILL%20BROADWAY"
+  },
+  {
+    "id": 90004873,
+    "label": "MILTON KEYNES CENTRAL",
+    "value": "MILTON KEYNES CENTRAL",
+    "stationNameEncoded": "MILTON%20KEYNES%20CENTRAL"
+  },
+  {
+    "id": 1001555,
+    "label": "MITCHAM EASTFIELDS",
+    "value": "MITCHAM EASTFIELDS",
+    "stationNameEncoded": "MITCHAM%20EASTFIELDS"
+  },
+  {
+    "id": 1001194,
+    "label": "MITCHAM JUNCTION",
+    "value": "MITCHAM JUNCTION",
+    "stationNameEncoded": "MITCHAM%20JUNCTION"
+  },
+  {
+    "id": 1000149,
+    "label": "MOORGATE",
+    "value": "MOORGATE",
+    "stationNameEncoded": "MOORGATE"
+  },
+  {
+    "id": 1001197,
+    "label": "MORDEN SOUTH",
+    "value": "MORDEN SOUTH",
+    "stationNameEncoded": "MORDEN%20SOUTH"
+  },
+  {
+    "id": 90004909,
+    "label": "MOULSECOOMB",
+    "value": "MOULSECOOMB",
+    "stationNameEncoded": "MOULSECOOMB"
+  },
+  {
+    "id": 90005182,
+    "label": "NETLEY",
+    "value": "NETLEY",
+    "stationNameEncoded": "NETLEY"
+  },
+  {
+    "id": 1001201,
+    "label": "NEW BARNET",
+    "value": "NEW BARNET",
+    "stationNameEncoded": "NEW%20BARNET"
+  },
+  {
+    "id": 1000156,
+    "label": "NEW CROSS GATE",
+    "value": "NEW CROSS GATE",
+    "stationNameEncoded": "NEW%20CROSS%20GATE"
+  },
+  {
+    "id": 1001207,
+    "label": "NEW SOUTHGATE",
+    "value": "NEW SOUTHGATE",
+    "stationNameEncoded": "NEW%20SOUTHGATE"
+  },
+  {
+    "id": 1001207,
+    "label": "NEW SOUTHGATE",
+    "value": "NEW SOUTHGATE",
+    "stationNameEncoded": "NEW%20SOUTHGATE"
+  },
+  {
+    "id": 1001685,
+    "label": "NEWHAVEN HARBOUR",
+    "value": "NEWHAVEN HARBOUR",
+    "stationNameEncoded": "NEWHAVEN%20HARBOUR"
+  },
+  {
+    "id": 1001686,
+    "label": "NEWHAVEN TOWN",
+    "value": "NEWHAVEN TOWN",
+    "stationNameEncoded": "NEWHAVEN%20TOWN"
+  },
+  {
+    "id": 1001209,
+    "label": "NORBURY",
+    "value": "NORBURY",
+    "stationNameEncoded": "NORBURY"
+  },
+  {
+    "id": 1001689,
+    "label": "NORMAN'S BAY",
+    "value": "NORMAN'S BAY",
+    "stationNameEncoded": "NORMAN%27S%20BAY"
+  },
+  {
+    "id": 1001210,
+    "label": "NORTH DULWICH",
+    "value": "NORTH DULWICH",
+    "stationNameEncoded": "NORTH%20DULWICH"
+  },
+  {
+    "id": 1001541,
+    "label": "NORTHFLEET",
+    "value": "NORTHFLEET",
+    "stationNameEncoded": "NORTHFLEET"
+  },
+  {
+    "id": 1001216,
+    "label": "NORWOOD JUNCTION",
+    "value": "NORWOOD JUNCTION",
+    "stationNameEncoded": "NORWOOD%20JUNCTION"
+  },
+  {
+    "id": 1001217,
+    "label": "NUNHEAD",
+    "value": "NUNHEAD",
+    "stationNameEncoded": "NUNHEAD"
+  },
+  {
+    "id": 1001691,
+    "label": "NUTBOURNE",
+    "value": "NUTBOURNE",
+    "stationNameEncoded": "NUTBOURNE"
+  },
+  {
+    "id": 1001693,
+    "label": "NUTFIELD",
+    "value": "NUTFIELD",
+    "stationNameEncoded": "NUTFIELD"
+  },
+  {
+    "id": 1001218,
+    "label": "OAKLEIGH PARK",
+    "value": "OAKLEIGH PARK",
+    "stationNameEncoded": "OAKLEIGH%20PARK"
+  },
+  {
+    "id": 1001218,
+    "label": "OAKLEIGH PARK",
+    "value": "OAKLEIGH PARK",
+    "stationNameEncoded": "OAKLEIGH%20PARK"
+  },
+  {
+    "id": 1001035,
+    "label": "OCKLEY",
+    "value": "OCKLEY",
+    "stationNameEncoded": "OCKLEY"
+  },
+  {
+    "id": 1000169,
+    "label": "OLD STREET",
+    "value": "OLD STREET",
+    "stationNameEncoded": "OLD%20STREET"
+  },
+  {
+    "id": 1001571,
+    "label": "ORE",
+    "value": "ORE",
+    "stationNameEncoded": "ORE"
+  },
+  {
+    "id": 1001220,
+    "label": "ORPINGTON",
+    "value": "ORPINGTON",
+    "stationNameEncoded": "ORPINGTON"
+  },
+  {
+    "id": 1001606,
+    "label": "OTFORD",
+    "value": "OTFORD",
+    "stationNameEncoded": "OTFORD"
+  },
+  {
+    "id": 1001695,
+    "label": "OXTED",
+    "value": "OXTED",
+    "stationNameEncoded": "OXTED"
+  },
+  {
+    "id": 1001222,
+    "label": "PALMERS GREEN",
+    "value": "PALMERS GREEN",
+    "stationNameEncoded": "PALMERS%20GREEN"
+  },
+  {
+    "id": 1001223,
+    "label": "PECKHAM RYE",
+    "value": "PECKHAM RYE",
+    "stationNameEncoded": "PECKHAM%20RYE"
+  },
+  {
+    "id": 1001224,
+    "label": "PENGE EAST",
+    "value": "PENGE EAST",
+    "stationNameEncoded": "PENGE%20EAST"
+  },
+  {
+    "id": 1001225,
+    "label": "PENGE WEST",
+    "value": "PENGE WEST",
+    "stationNameEncoded": "PENGE%20WEST"
+  },
+  {
+    "id": 1001701,
+    "label": "PENSHURST",
+    "value": "PENSHURST",
+    "stationNameEncoded": "PENSHURST"
+  },
+  {
+    "id": 90005544,
+    "label": "PETERBOROUGH",
+    "value": "PETERBOROUGH",
+    "stationNameEncoded": "PETERBOROUGH"
+  },
+  {
+    "id": 1001226,
+    "label": "PETTS WOOD",
+    "value": "PETTS WOOD",
+    "stationNameEncoded": "PETTS%20WOOD"
+  },
+  {
+    "id": 1001703,
+    "label": "PEVENSEY & WESTHAM",
+    "value": "PEVENSEY & WESTHAM",
+    "stationNameEncoded": "PEVENSEY%20%26%20WESTHAM"
+  },
+  {
+    "id": 1001707,
+    "label": "PEVENSEY BAY",
+    "value": "PEVENSEY BAY",
+    "stationNameEncoded": "PEVENSEY%20BAY"
+  },
+  {
+    "id": 1001709,
+    "label": "PLUMPTON",
+    "value": "PLUMPTON",
+    "stationNameEncoded": "PLUMPTON"
+  },
+  {
+    "id": 1001227,
+    "label": "PLUMSTEAD",
+    "value": "PLUMSTEAD",
+    "stationNameEncoded": "PLUMSTEAD"
+  },
+  {
+    "id": 1001712,
+    "label": "POLEGATE",
+    "value": "POLEGATE",
+    "stationNameEncoded": "POLEGATE"
+  },
+  {
+    "id": 90005574,
+    "label": "PORTCHESTER",
+    "value": "PORTCHESTER",
+    "stationNameEncoded": "PORTCHESTER"
+  },
+  {
+    "id": 90005853,
+    "label": "PORTSLADE",
+    "value": "PORTSLADE",
+    "stationNameEncoded": "PORTSLADE"
+  },
+  {
+    "id": 90005849,
+    "label": "PORTSMOUTH & SOUTHSEA",
+    "value": "PORTSMOUTH & SOUTHSEA",
+    "stationNameEncoded": "PORTSMOUTH%20%26%20SOUTHSEA"
+  },
+  {
+    "id": 90005641,
+    "label": "PORTSMOUTH HARBOUR",
+    "value": "PORTSMOUTH HARBOUR",
+    "stationNameEncoded": "PORTSMOUTH%20HARBOUR"
+  },
+  {
+    "id": 1011145,
+    "label": "POTTERS BAR",
+    "value": "POTTERS BAR",
+    "stationNameEncoded": "POTTERS%20BAR"
+  },
+  {
+    "id": 90005811,
+    "label": "PRESTON PARK",
+    "value": "PRESTON PARK",
+    "stationNameEncoded": "PRESTON%20PARK"
+  },
+  {
+    "id": 90005887,
+    "label": "PULBOROUGH",
+    "value": "PULBOROUGH",
+    "stationNameEncoded": "PULBOROUGH"
+  },
+  {
+    "id": 1001229,
+    "label": "PURLEY",
+    "value": "PURLEY",
+    "stationNameEncoded": "PURLEY"
+  },
+  {
+    "id": 1001230,
+    "label": "PURLEY OAKS",
+    "value": "PURLEY OAKS",
+    "stationNameEncoded": "PURLEY%20OAKS"
+  },
+  {
+    "id": 1001233,
+    "label": "QUEENS ROAD PECKHAM",
+    "value": "QUEENS ROAD PECKHAM",
+    "stationNameEncoded": "QUEENS%20ROAD%20PECKHAM"
+  },
+  {
+    "id": 1000486,
+    "label": "RADLETT",
+    "value": "RADLETT",
+    "stationNameEncoded": "RADLETT"
+  },
+  {
+    "id": 1001235,
+    "label": "RAINHAM",
+    "value": "RAINHAM",
+    "stationNameEncoded": "RAINHAM"
+  },
+  {
+    "id": 1001236,
+    "label": "RAVENSBOURNE",
+    "value": "RAVENSBOURNE",
+    "stationNameEncoded": "RAVENSBOURNE"
+  },
+  {
+    "id": 1001721,
+    "label": "REDHILL",
+    "value": "REDHILL",
+    "stationNameEncoded": "REDHILL"
+  },
+  {
+    "id": 1001239,
+    "label": "REEDHAM",
+    "value": "REEDHAM",
+    "stationNameEncoded": "REEDHAM"
+  },
+  {
+    "id": 1001722,
+    "label": "REIGATE",
+    "value": "REIGATE",
+    "stationNameEncoded": "REIGATE"
+  },
+  {
+    "id": 1001242,
+    "label": "RIDDLESDOWN",
+    "value": "RIDDLESDOWN",
+    "stationNameEncoded": "RIDDLESDOWN"
+  },
+  {
+    "id": 90005970,
+    "label": "ROCHESTER",
+    "value": "ROCHESTER",
+    "stationNameEncoded": "ROCHESTER"
+  },
+  {
+    "id": 1000459,
+    "label": "ROYSTON",
+    "value": "ROYSTON",
+    "stationNameEncoded": "ROYSTON"
+  },
+  {
+    "id": 1001223,
+    "label": "RYE",
+    "value": "RYE",
+    "stationNameEncoded": "RYE"
+  },
+  {
+    "id": 90006250,
+    "label": "SALFORDS",
+    "value": "SALFORDS",
+    "stationNameEncoded": "SALFORDS"
+  },
+  {
+    "id": 1001244,
+    "label": "SANDERSTEAD",
+    "value": "SANDERSTEAD",
+    "stationNameEncoded": "SANDERSTEAD"
+  },
+  {
+    "id": 1001741,
+    "label": "SANDY",
+    "value": "SANDY",
+    "stationNameEncoded": "SANDY"
+  },
+  {
+    "id": 1001744,
+    "label": "SEAFORD",
+    "value": "SEAFORD",
+    "stationNameEncoded": "SEAFORD"
+  },
+  {
+    "id": 1001245,
+    "label": "SELHURST",
+    "value": "SELHURST",
+    "stationNameEncoded": "SELHURST"
+  },
+  {
+    "id": 1001748,
+    "label": "SEVENOAKS",
+    "value": "SEVENOAKS",
+    "stationNameEncoded": "SEVENOAKS"
+  },
+  {
+    "id": 1000203,
+    "label": "SHEPHERDS BUSH",
+    "value": "SHEPHERDS BUSH",
+    "stationNameEncoded": "SHEPHERDS%20BUSH"
+  },
+  {
+    "id": 1001953,
+    "label": "SHEPRETH",
+    "value": "SHEPRETH",
+    "stationNameEncoded": "SHEPRETH"
+  },
+  {
+    "id": 90006475,
+    "label": "SHOLING",
+    "value": "SHOLING",
+    "stationNameEncoded": "SHOLING"
+  },
+  {
+    "id": 90006506,
+    "label": "SHOREHAM (KENT)",
+    "value": "SHOREHAM (KENT)",
+    "stationNameEncoded": "SHOREHAM%20(KENT)"
+  },
+  {
+    "id": 1001766,
+    "label": "SHOREHAM-BY-SEA",
+    "value": "SHOREHAM-BY-SEA",
+    "stationNameEncoded": "SHOREHAM-BY-SEA"
+  },
+  {
+    "id": 1001248,
+    "label": "SHORTLANDS",
+    "value": "SHORTLANDS",
+    "stationNameEncoded": "SHORTLANDS"
+  },
+  {
+    "id": 1001252,
+    "label": "SLADE GREEN",
+    "value": "SLADE GREEN",
+    "stationNameEncoded": "SLADE%20GREEN"
+  },
+  {
+    "id": 1001256,
+    "label": "SOUTH BERMONDSEY",
+    "value": "SOUTH BERMONDSEY",
+    "stationNameEncoded": "SOUTH%20BERMONDSEY"
+  },
+  {
+    "id": 1001258,
+    "label": "SOUTH CROYDON",
+    "value": "SOUTH CROYDON",
+    "stationNameEncoded": "SOUTH%20CROYDON"
+  },
+  {
+    "id": 1001262,
+    "label": "SOUTH MERTON",
+    "value": "SOUTH MERTON",
+    "stationNameEncoded": "SOUTH%20MERTON"
+  },
+  {
+    "id": 90006706,
+    "label": "SOUTHAMPTON AIRPORT PARKWAY",
+    "value": "SOUTHAMPTON AIRPORT PARKWAY",
+    "stationNameEncoded": "SOUTHAMPTON%20AIRPORT%20PARKWAY"
+  },
+  {
+    "id": 90006699,
+    "label": "SOUTHAMPTON CENTRAL",
+    "value": "SOUTHAMPTON CENTRAL",
+    "stationNameEncoded": "SOUTHAMPTON%20CENTRAL"
+  },
+  {
+    "id": 1001773,
+    "label": "SOUTHBOURNE",
+    "value": "SOUTHBOURNE",
+    "stationNameEncoded": "SOUTHBOURNE"
+  },
+  {
+    "id": 1001776,
+    "label": "SOUTHEASE",
+    "value": "SOUTHEASE",
+    "stationNameEncoded": "SOUTHEASE"
+  },
+  {
+    "id": 1001778,
+    "label": "SOUTHWICK",
+    "value": "SOUTHWICK",
+    "stationNameEncoded": "SOUTHWICK"
+  },
+  {
+    "id": 1000482,
+    "label": "ST ALBANS CITY",
+    "value": "ST ALBANS CITY",
+    "stationNameEncoded": "ST%20ALBANS%20CITY"
+  },
+  {
+    "id": 90006800,
+    "label": "ST DENYS",
+    "value": "ST DENYS",
+    "stationNameEncoded": "ST%20DENYS"
+  },
+  {
+    "id": 1001267,
+    "label": "ST HELIER",
+    "value": "ST HELIER",
+    "stationNameEncoded": "ST%20HELIER"
+  },
+  {
+    "id": 1001783,
+    "label": "ST LEONARDS WARRIER SQUARE",
+    "value": "ST LEONARDS WARRIER SQUARE",
+    "stationNameEncoded": "ST%20LEONARDS%20WARRIER%20SQUARE"
+  },
+  {
+    "id": 1001271,
+    "label": "ST MARY CRAY",
+    "value": "ST MARY CRAY",
+    "stationNameEncoded": "ST%20MARY%20CRAY"
+  },
+  {
+    "id": 1001784,
+    "label": "ST NEOTS",
+    "value": "ST NEOTS",
+    "stationNameEncoded": "ST%20NEOTS"
+  },
+  {
+    "id": 1000129,
+    "label": "ST PANCRAS INTERNATIONAL",
+    "value": "ST PANCRAS INTERNATIONAL",
+    "stationNameEncoded": "ST%20PANCRAS%20INTERNATIONAL"
+  },
+  {
+    "id": 1023126,
+    "label": "STEVENAGE",
+    "value": "STEVENAGE",
+    "stationNameEncoded": "STEVENAGE"
+  },
+  {
+    "id": 90006795,
+    "label": "STONE CROSSING",
+    "value": "STONE CROSSING",
+    "stationNameEncoded": "STONE%20CROSSING"
+  },
+  {
+    "id": 1001279,
+    "label": "STREATHAM",
+    "value": "STREATHAM",
+    "stationNameEncoded": "STREATHAM"
+  },
+  {
+    "id": 1001280,
+    "label": "STREATHAM COMMON",
+    "value": "STREATHAM COMMON",
+    "stationNameEncoded": "STREATHAM%20COMMON"
+  },
+  {
+    "id": 1001281,
+    "label": "STREATHAM HILL",
+    "value": "STREATHAM HILL",
+    "stationNameEncoded": "STREATHAM%20HILL"
+  },
+  {
+    "id": 90006982,
+    "label": "STROOD",
+    "value": "STROOD",
+    "stationNameEncoded": "STROOD"
+  },
+  {
+    "id": 1001286,
+    "label": "SUTTON",
+    "value": "SUTTON",
+    "stationNameEncoded": "SUTTON"
+  },
+  {
+    "id": 1001802,
+    "label": "SWANLEY",
+    "value": "SWANLEY",
+    "stationNameEncoded": "SWANLEY"
+  },
+  {
+    "id": 1001542,
+    "label": "SWANSCOMBE",
+    "value": "SWANSCOMBE",
+    "stationNameEncoded": "SWANSCOMBE"
+  },
+  {
+    "id": 90007073,
+    "label": "SWANWICK",
+    "value": "SWANWICK",
+    "stationNameEncoded": "SWANWICK"
+  },
+  {
+    "id": 1001289,
+    "label": "SYDENHAM",
+    "value": "SYDENHAM",
+    "stationNameEncoded": "SYDENHAM"
+  },
+  {
+    "id": 1001290,
+    "label": "SYDENHAM HILL",
+    "value": "SYDENHAM HILL",
+    "stationNameEncoded": "SYDENHAM%20HILL"
+  },
+  {
+    "id": 1001572,
+    "label": "TADWORTH",
+    "value": "TADWORTH",
+    "stationNameEncoded": "TADWORTH"
+  },
+  {
+    "id": 1001560,
+    "label": "TATTENHAM CORNER",
+    "value": "TATTENHAM CORNER",
+    "stationNameEncoded": "TATTENHAM%20CORNER"
+  },
+  {
+    "id": 1001294,
+    "label": "THORNTON HEATH",
+    "value": "THORNTON HEATH",
+    "stationNameEncoded": "THORNTON%20HEATH"
+  },
+  {
+    "id": 1001817,
+    "label": "THREE BRIDGES",
+    "value": "THREE BRIDGES",
+    "stationNameEncoded": "THREE%20BRIDGES"
+  },
+  {
+    "id": 1001822,
+    "label": "THREE OAKS",
+    "value": "THREE OAKS",
+    "stationNameEncoded": "THREE%20OAKS"
+  },
+  {
+    "id": 90000051,
+    "label": "TONBRIDGE",
+    "value": "TONBRIDGE",
+    "stationNameEncoded": "TONBRIDGE"
+  },
+  {
+    "id": 1001296,
+    "label": "TOOTING",
+    "value": "TOOTING",
+    "stationNameEncoded": "TOOTING"
+  },
+  {
+    "id": 1001010,
+    "label": "TRING",
+    "value": "TRING",
+    "stationNameEncoded": "TRING"
+  },
+  {
+    "id": 1001298,
+    "label": "TULSE HILL",
+    "value": "TULSE HILL",
+    "stationNameEncoded": "TULSE%20HILL"
+  },
+  {
+    "id": 1001957,
+    "label": "UCKFIELD",
+    "value": "UCKFIELD",
+    "stationNameEncoded": "UCKFIELD"
+  },
+  {
+    "id": 1001538,
+    "label": "UPPER WARLINGHAM",
+    "value": "UPPER WARLINGHAM",
+    "stationNameEncoded": "UPPER%20WARLINGHAM"
+  },
+  {
+    "id": 1000248,
+    "label": "VICTORIA",
+    "value": "VICTORIA",
+    "stationNameEncoded": "VICTORIA"
+  },
+  {
+    "id": 1001305,
+    "label": "WADDON",
+    "value": "WADDON",
+    "stationNameEncoded": "WADDON"
+  },
+  {
+    "id": 1001306,
+    "label": "WALLINGTON",
+    "value": "WALLINGTON",
+    "stationNameEncoded": "WALLINGTON"
+  },
+  {
+    "id": 1001309,
+    "label": "WANDSWORTH COMMON",
+    "value": "WANDSWORTH COMMON",
+    "stationNameEncoded": "WANDSWORTH%20COMMON"
+  },
+  {
+    "id": 1001310,
+    "label": "WANDSWORTH ROAD",
+    "value": "WANDSWORTH ROAD",
+    "stationNameEncoded": "WANDSWORTH%20ROAD"
+  },
+  {
+    "id": 90008036,
+    "label": "WARBLINGTON",
+    "value": "WARBLINGTON",
+    "stationNameEncoded": "WARBLINGTON"
+  },
+  {
+    "id": 1001832,
+    "label": "WARNHAM",
+    "value": "WARNHAM",
+    "stationNameEncoded": "WARNHAM"
+  },
+  {
+    "id": 1001960,
+    "label": "WATERBEACH",
+    "value": "WATERBEACH",
+    "stationNameEncoded": "WATERBEACH"
+  },
+  {
+    "id": 1001317,
+    "label": "WATFORD JUNCTION",
+    "value": "WATFORD JUNCTION",
+    "stationNameEncoded": "WATFORD%20JUNCTION"
+  },
+  {
+    "id": 90007600,
+    "label": "WATLINGTON",
+    "value": "WATLINGTON",
+    "stationNameEncoded": "WATLINGTON"
+  },
+  {
+    "id": 1000474,
+    "label": "WATTON AT STONE",
+    "value": "WATTON AT STONE",
+    "stationNameEncoded": "WATTON%20AT%20STONE"
+  },
+  {
+    "id": 1000478,
+    "label": "WELHAM GREEN",
+    "value": "WELHAM GREEN",
+    "stationNameEncoded": "WELHAM%20GREEN"
+  },
+  {
+    "id": 1000455,
+    "label": "WELWYN GARDEN CITY",
+    "value": "WELWYN GARDEN CITY",
+    "stationNameEncoded": "WELWYN%20GARDEN%20CITY"
+  },
+  {
+    "id": 1000470,
+    "label": "WELWYN NORTH",
+    "value": "WELWYN NORTH",
+    "stationNameEncoded": "WELWYN%20NORTH"
+  },
+  {
+    "id": 1000256,
+    "label": "WEMBLEY CENTRAL",
+    "value": "WEMBLEY CENTRAL",
+    "stationNameEncoded": "WEMBLEY%20CENTRAL"
+  },
+  {
+    "id": 1000260,
+    "label": "WEST BROMPTON",
+    "value": "WEST BROMPTON",
+    "stationNameEncoded": "WEST%20BROMPTON"
+  },
+  {
+    "id": 1001324,
+    "label": "WEST CROYDON",
+    "value": "WEST CROYDON",
+    "stationNameEncoded": "WEST%20CROYDON"
+  },
+  {
+    "id": 1001326,
+    "label": "WEST DULWICH",
+    "value": "WEST DULWICH",
+    "stationNameEncoded": "WEST%20DULWICH"
+  },
+  {
+    "id": 1000263,
+    "label": "WEST HAMPSTEAD",
+    "value": "WEST HAMPSTEAD",
+    "stationNameEncoded": "WEST%20HAMPSTEAD"
+  },
+  {
+    "id": 1001331,
+    "label": "WEST NORWOOD",
+    "value": "WEST NORWOOD",
+    "stationNameEncoded": "WEST%20NORWOOD"
+  },
+  {
+    "id": 1001333,
+    "label": "WEST SUTTON",
+    "value": "WEST SUTTON",
+    "stationNameEncoded": "WEST%20SUTTON"
+  },
+  {
+    "id": 1001837,
+    "label": "WEST WORTHING",
+    "value": "WEST WORTHING",
+    "stationNameEncoded": "WEST%20WORTHING"
+  },
+  {
+    "id": 1001323,
+    "label": "WESTCOMBE PARK",
+    "value": "WESTCOMBE PARK",
+    "stationNameEncoded": "WESTCOMBE%20PARK"
+  },
+  {
+    "id": 1001536,
+    "label": "WHYTELEAFE",
+    "value": "WHYTELEAFE",
+    "stationNameEncoded": "WHYTELEAFE"
+  },
+  {
+    "id": 1001537,
+    "label": "WHYTELEAFE SOUTH",
+    "value": "WHYTELEAFE SOUTH",
+    "stationNameEncoded": "WHYTELEAFE%20SOUTH"
+  },
+  {
+    "id": 1000272,
+    "label": "WIMBLEDON",
+    "value": "WIMBLEDON",
+    "stationNameEncoded": "WIMBLEDON"
+  },
+  {
+    "id": 1001339,
+    "label": "WIMBLEDON CHASE",
+    "value": "WIMBLEDON CHASE",
+    "stationNameEncoded": "WIMBLEDON%20CHASE"
+  },
+  {
+    "id": 1001853,
+    "label": "WINCHELSEA",
+    "value": "WINCHELSEA",
+    "stationNameEncoded": "WINCHELSEA"
+  },
+  {
+    "id": 1001340,
+    "label": "WINCHMORE HILL",
+    "value": "WINCHMORE HILL",
+    "stationNameEncoded": "WINCHMORE%20HILL"
+  },
+  {
+    "id": 90008130,
+    "label": "WIVELSFIELD",
+    "value": "WIVELSFIELD",
+    "stationNameEncoded": "WIVELSFIELD"
+  },
+  {
+    "id": 1001567,
+    "label": "WOLDINGHAM",
+    "value": "WOLDINGHAM",
+    "stationNameEncoded": "WOLDINGHAM"
+  },
+  {
+    "id": 1001342,
+    "label": "WOODMANSTERNE",
+    "value": "WOODMANSTERNE",
+    "stationNameEncoded": "WOODMANSTERNE"
+  },
+  {
+    "id": 90008002,
+    "label": "WOOLSTON",
+    "value": "WOOLSTON",
+    "stationNameEncoded": "WOOLSTON"
+  },
+  {
+    "id": 1001344,
+    "label": "WOOLWICH ARSENAL",
+    "value": "WOOLWICH ARSENAL",
+    "stationNameEncoded": "WOOLWICH%20ARSENAL"
+  },
+  {
+    "id": 1001345,
+    "label": "WOOLWICH DOCKYARD",
+    "value": "WOOLWICH DOCKYARD",
+    "stationNameEncoded": "WOOLWICH%20DOCKYARD"
+  },
+  {
+    "id": 1001597,
+    "label": "WORTHING",
+    "value": "WORTHING",
+    "stationNameEncoded": "WORTHING"
+  }
+],
+      minLength: 2,
+      select: function( event, ui ) {
+      //  log( "Selected: " + ui.item.label + " aka " + ui.item.id );
+        endingStationSelected = ui.item.id;
+        console.log("ending station ID", endingStationSelected);
+      }
+    });
+
+    //starting station below hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+ 
+    $( "#startingStation" ).autocomplete({
+      source: [
+  {
+    "id": 1001001,
+    "label": "ABBEY WOOD",
+    "value": "ABBEY WOOD",
+    "stationNameEncoded": "ABBEY%20WOOD"
+  },
+  {
+    "id": 90000115,
+    "label": "ALDRINGTON",
+    "value": "ALDRINGTON",
+    "stationNameEncoded": "ALDRINGTON"
+  },
+  {
+    "id": 1001005,
+    "label": "ALEXANDRA PALACE",
+    "value": "ALEXANDRA PALACE",
+    "stationNameEncoded": "ALEXANDRA%20PALACE"
+  },
+  {
+    "id": 90000171,
+    "label": "AMBERLEY",
+    "value": "AMBERLEY",
+    "stationNameEncoded": "AMBERLEY"
+  },
+  {
+    "id": 1001007,
+    "label": "ANERLEY",
+    "value": "ANERLEY",
+    "stationNameEncoded": "ANERLEY"
+  },
+  {
+    "id": 1001446,
+    "label": "ANGMERING",
+    "value": "ANGMERING",
+    "stationNameEncoded": "ANGMERING"
+  },
+  {
+    "id": 1001450,
+    "label": "APPLEDORE",
+    "value": "APPLEDORE",
+    "stationNameEncoded": "APPLEDORE"
+  },
+  {
+    "id": 1001864,
+    "label": "ARLESEY",
+    "value": "ARLESEY",
+    "stationNameEncoded": "ARLESEY"
+  },
+  {
+    "id": 1001474,
+    "label": "ARUNDEL",
+    "value": "ARUNDEL",
+    "stationNameEncoded": "ARUNDEL"
+  },
+  {
+    "id": 1000994,
+    "label": "ASHFORD INTERNATIONAL",
+    "value": "ASHFORD INTERNATIONAL",
+    "stationNameEncoded": "ASHFORD%20INTERNATIONAL"
+  },
+  {
+    "id": 1001548,
+    "label": "ASHTEAD",
+    "value": "ASHTEAD",
+    "stationNameEncoded": "ASHTEAD"
+  },
+  {
+    "id": 90000300,
+    "label": "ASHURST",
+    "value": "ASHURST",
+    "stationNameEncoded": "ASHURST"
+  },
+  {
+    "id": 1000563,
+    "label": "ASHWELL & MORDEN",
+    "value": "ASHWELL & MORDEN",
+    "stationNameEncoded": "ASHWELL%20%26%20MORDEN"
+  },
+  {
+    "id": 90000379,
+    "label": "BALCOMBE",
+    "value": "BALCOMBE",
+    "stationNameEncoded": "BALCOMBE"
+  },
+  {
+    "id": 1000721,
+    "label": "BALDOCK",
+    "value": "BALDOCK",
+    "stationNameEncoded": "BALDOCK"
+  },
+  {
+    "id": 1000012,
+    "label": "BALHAM",
+    "value": "BALHAM",
+    "stationNameEncoded": "BALHAM"
+  },
+  {
+    "id": 1001552,
+    "label": "BANSTEAD",
+    "value": "BANSTEAD",
+    "stationNameEncoded": "BANSTEAD"
+  },
+  {
+    "id": 1001452,
+    "label": "BARNHAM",
+    "value": "BARNHAM",
+    "stationNameEncoded": "BARNHAM"
+  },
+  {
+    "id": 90000437,
+    "label": "BAT & BALL",
+    "value": "BAT & BALL",
+    "stationNameEncoded": "BAT%20%26%20BALL"
+  },
+  {
+    "id": 1001016,
+    "label": "BATTERSEA PARK",
+    "value": "BATTERSEA PARK",
+    "stationNameEncoded": "BATTERSEA%20PARK"
+  },
+  {
+    "id": 1000476,
+    "label": "BAYFORD",
+    "value": "BAYFORD",
+    "stationNameEncoded": "BAYFORD"
+  },
+  {
+    "id": 1001017,
+    "label": "BECKENHAM HILL",
+    "value": "BECKENHAM HILL",
+    "stationNameEncoded": "BECKENHAM%20HILL"
+  },
+  {
+    "id": 1001018,
+    "label": "BECKENHAM JUNCTION",
+    "value": "BECKENHAM JUNCTION",
+    "stationNameEncoded": "BECKENHAM%20JUNCTION"
+  },
+  {
+    "id": 90000519,
+    "label": "BEDFORD",
+    "value": "BEDFORD",
+    "stationNameEncoded": "BEDFORD"
+  },
+  {
+    "id": 90000480,
+    "label": "BEDHAMPTON",
+    "value": "BEDHAMPTON",
+    "stationNameEncoded": "BEDHAMPTON"
+  },
+  {
+    "id": 1001019,
+    "label": "BELLINGHAM",
+    "value": "BELLINGHAM",
+    "stationNameEncoded": "BELLINGHAM"
+  },
+  {
+    "id": 1001020,
+    "label": "BELMONT",
+    "value": "BELMONT",
+    "stationNameEncoded": "BELMONT"
+  },
+  {
+    "id": 1001021,
+    "label": "BELVEDERE",
+    "value": "BELVEDERE",
+    "stationNameEncoded": "BELVEDERE"
+  },
+  {
+    "id": 1001459,
+    "label": "BERWICK",
+    "value": "BERWICK",
+    "stationNameEncoded": "BERWICK"
+  },
+  {
+    "id": 1001329,
+    "label": "BEXHILL",
+    "value": "BEXHILL",
+    "stationNameEncoded": "BEXHILL"
+  },
+  {
+    "id": 1001026,
+    "label": "BICKLEY",
+    "value": "BICKLEY",
+    "stationNameEncoded": "BICKLEY"
+  },
+  {
+    "id": 90000603,
+    "label": "BIGGLESWADE",
+    "value": "BIGGLESWADE",
+    "stationNameEncoded": "BIGGLESWADE"
+  },
+  {
+    "id": 1001461,
+    "label": "BILLINGSHURST",
+    "value": "BILLINGSHURST",
+    "stationNameEncoded": "BILLINGSHURST"
+  },
+  {
+    "id": 1001027,
+    "label": "BIRKBECK",
+    "value": "BIRKBECK",
+    "stationNameEncoded": "BIRKBECK"
+  },
+  {
+    "id": 1001469,
+    "label": "BISHOPSTONE",
+    "value": "BISHOPSTONE",
+    "stationNameEncoded": "BISHOPSTONE"
+  },
+  {
+    "id": 90000614,
+    "label": "BITTERNE",
+    "value": "BITTERNE",
+    "stationNameEncoded": "BITTERNE"
+  },
+  {
+    "id": 1000023,
+    "label": "BLACKFRIARS",
+    "value": "BLACKFRIARS",
+    "stationNameEncoded": "BLACKFRIARS"
+  },
+  {
+    "id": 90000691,
+    "label": "BLETCHLEY",
+    "value": "BLETCHLEY",
+    "stationNameEncoded": "BLETCHLEY"
+  },
+  {
+    "id": 1001530,
+    "label": "BOGNOR REGIS",
+    "value": "BOGNOR REGIS",
+    "stationNameEncoded": "BOGNOR%20REGIS"
+  },
+  {
+    "id": 1001511,
+    "label": "BOOKHAM",
+    "value": "BOOKHAM",
+    "stationNameEncoded": "BOOKHAM"
+  },
+  {
+    "id": 1001353,
+    "label": "BOSHAM",
+    "value": "BOSHAM",
+    "stationNameEncoded": "BOSHAM"
+  },
+  {
+    "id": 1001031,
+    "label": "BOWES PARK",
+    "value": "BOWES PARK",
+    "stationNameEncoded": "BOWES%20PARK"
+  },
+  {
+    "id": 1001509,
+    "label": "BOXHILL & WESTHUMBLE",
+    "value": "BOXHILL & WESTHUMBLE",
+    "stationNameEncoded": "BOXHILL%20%26%20WESTHUMBLE"
+  },
+  {
+    "id": 90000103,
+    "label": "BRIGHTON",
+    "value": "BRIGHTON",
+    "stationNameEncoded": "BRIGHTON"
+  },
+  {
+    "id": 1001035,
+    "label": "BROCKLEY",
+    "value": "BROCKLEY",
+    "stationNameEncoded": "BROCKLEY"
+  },
+  {
+    "id": 1001037,
+    "label": "BROMLEY SOUTH",
+    "value": "BROMLEY SOUTH",
+    "stationNameEncoded": "BROMLEY%20SOUTH"
+  },
+  {
+    "id": 1000291,
+    "label": "BROOKMANS PARK",
+    "value": "BROOKMANS PARK",
+    "stationNameEncoded": "BROOKMANS%20PARK"
+  },
+  {
+    "id": 1001895,
+    "label": "BURGESS HILL",
+    "value": "BURGESS HILL",
+    "stationNameEncoded": "BURGESS%20HILL"
+  },
+  {
+    "id": 90001159,
+    "label": "BURSLEDON",
+    "value": "BURSLEDON",
+    "stationNameEncoded": "BURSLEDON"
+  },
+  {
+    "id": 1001898,
+    "label": "BUXTED",
+    "value": "BUXTED",
+    "stationNameEncoded": "BUXTED"
+  },
+  {
+    "id": 1001044,
+    "label": "CAMBRIDGE",
+    "value": "CAMBRIDGE",
+    "stationNameEncoded": "CAMBRIDGE"
+  },
+  {
+    "id": 1000040,
+    "label": "CANNON STREET",
+    "value": "CANNON STREET",
+    "stationNameEncoded": "CANNON%20STREET"
+  },
+  {
+    "id": 1001050,
+    "label": "CARSHALTON",
+    "value": "CARSHALTON",
+    "stationNameEncoded": "CARSHALTON"
+  },
+  {
+    "id": 1001050,
+    "label": "CARSHALTON BEECHES",
+    "value": "CARSHALTON BEECHES",
+    "stationNameEncoded": "CARSHALTON%20BEECHES"
+  },
+  {
+    "id": 1001539,
+    "label": "CATERHAM",
+    "value": "CATERHAM",
+    "stationNameEncoded": "CATERHAM"
+  },
+  {
+    "id": 1001054,
+    "label": "CATFORD",
+    "value": "CATFORD",
+    "stationNameEncoded": "CATFORD"
+  },
+  {
+    "id": 1000045,
+    "label": "CHARING CROSS",
+    "value": "CHARING CROSS",
+    "stationNameEncoded": "CHARING%20CROSS"
+  },
+  {
+    "id": 1001058,
+    "label": "CHARLTON",
+    "value": "CHARLTON",
+    "stationNameEncoded": "CHARLTON"
+  },
+  {
+    "id": 90001362,
+    "label": "CHATHAM",
+    "value": "CHATHAM",
+    "stationNameEncoded": "CHATHAM"
+  },
+  {
+    "id": 1001059,
+    "label": "CHEAM",
+    "value": "CHEAM",
+    "stationNameEncoded": "CHEAM"
+  },
+  {
+    "id": 1001574,
+    "label": "CHICHESTER",
+    "value": "CHICHESTER",
+    "stationNameEncoded": "CHICHESTER"
+  },
+  {
+    "id": 1001557,
+    "label": "CHIPSTEAD",
+    "value": "CHIPSTEAD",
+    "stationNameEncoded": "CHIPSTEAD"
+  },
+  {
+    "id": 90001448,
+    "label": "CHRISTS HOSPITAL",
+    "value": "CHRISTS HOSPITAL",
+    "stationNameEncoded": "CHRISTS%20HOSPITAL"
+  },
+  {
+    "id": 1001067,
+    "label": "CITY THAMESLINK",
+    "value": "CITY THAMESLINK",
+    "stationNameEncoded": "CITY%20THAMESLINK"
+  },
+  {
+    "id": 1001577,
+    "label": "CLANDON",
+    "value": "CLANDON",
+    "stationNameEncoded": "CLANDON"
+  },
+  {
+    "id": 1001068,
+    "label": "CLAPHAM HIGH STREET",
+    "value": "CLAPHAM HIGH STREET",
+    "stationNameEncoded": "CLAPHAM%20HIGH%20STREET"
+  },
+  {
+    "id": 1001069,
+    "label": "CLAPHAM JUNCTION",
+    "value": "CLAPHAM JUNCTION",
+    "stationNameEncoded": "CLAPHAM%20JUNCTION"
+  },
+  {
+    "id": 1001579,
+    "label": "COLLINGTON",
+    "value": "COLLINGTON",
+    "stationNameEncoded": "COLLINGTON"
+  },
+  {
+    "id": 1001583,
+    "label": "COODEN BEACH",
+    "value": "COODEN BEACH",
+    "stationNameEncoded": "COODEN%20BEACH"
+  },
+  {
+    "id": 1001586,
+    "label": "COOKSBRIDGE",
+    "value": "COOKSBRIDGE",
+    "stationNameEncoded": "COOKSBRIDGE"
+  },
+  {
+    "id": 90001719,
+    "label": "COSHAM",
+    "value": "COSHAM",
+    "stationNameEncoded": "COSHAM"
+  },
+  {
+    "id": 1001072,
+    "label": "COULSDON SOUTH",
+    "value": "COULSDON SOUTH",
+    "stationNameEncoded": "COULSDON%20SOUTH"
+  },
+  {
+    "id": 1001253,
+    "label": "COULSDON TOWN",
+    "value": "COULSDON TOWN",
+    "stationNameEncoded": "COULSDON%20TOWN"
+  },
+  {
+    "id": 1001588,
+    "label": "COWDEN",
+    "value": "COWDEN",
+    "stationNameEncoded": "COWDEN"
+  },
+  {
+    "id": 1001590,
+    "label": "CRAWLEY",
+    "value": "CRAWLEY",
+    "stationNameEncoded": "CRAWLEY"
+  },
+  {
+    "id": 1001074,
+    "label": "CREWS HILL",
+    "value": "CREWS HILL",
+    "stationNameEncoded": "CREWS%20HILL"
+  },
+  {
+    "id": 1001075,
+    "label": "CRICKLEWOOD",
+    "value": "CRICKLEWOOD",
+    "stationNameEncoded": "CRICKLEWOOD"
+  },
+  {
+    "id": 1001076,
+    "label": "CROFTON PARK",
+    "value": "CROFTON PARK",
+    "stationNameEncoded": "CROFTON%20PARK"
+  },
+  {
+    "id": 1001078,
+    "label": "CRYSTAL PALACE",
+    "value": "CRYSTAL PALACE",
+    "stationNameEncoded": "CRYSTAL%20PALACE"
+  },
+  {
+    "id": 1001504,
+    "label": "CUFFLEY",
+    "value": "CUFFLEY",
+    "stationNameEncoded": "CUFFLEY"
+  },
+  {
+    "id": 1001082,
+    "label": "DARTFORD",
+    "value": "DARTFORD",
+    "stationNameEncoded": "DARTFORD"
+  },
+  {
+    "id": 1001083,
+    "label": "DENMARK HILL",
+    "value": "DENMARK HILL",
+    "stationNameEncoded": "DENMARK%20HILL"
+  },
+  {
+    "id": 1001084,
+    "label": "DEPTFORD",
+    "value": "DEPTFORD",
+    "stationNameEncoded": "DEPTFORD"
+  },
+  {
+    "id": 90002197,
+    "label": "DOLEHAM",
+    "value": "DOLEHAM",
+    "stationNameEncoded": "DOLEHAM"
+  },
+  {
+    "id": 1001507,
+    "label": "DORKING",
+    "value": "DORKING",
+    "stationNameEncoded": "DORKING"
+  },
+  {
+    "id": 90002279,
+    "label": "DORMANS",
+    "value": "DORMANS",
+    "stationNameEncoded": "DORMANS"
+  },
+  {
+    "id": 90002290,
+    "label": "DOWNHAM MARKET",
+    "value": "DOWNHAM MARKET",
+    "stationNameEncoded": "DOWNHAM%20MARKET"
+  },
+  {
+    "id": 1001086,
+    "label": "DRAYTON PARK",
+    "value": "DRAYTON PARK",
+    "stationNameEncoded": "DRAYTON%20PARK"
+  },
+  {
+    "id": 90002418,
+    "label": "EARLSWOOD",
+    "value": "EARLSWOOD",
+    "stationNameEncoded": "EARLSWOOD"
+  },
+  {
+    "id": 1001089,
+    "label": "EAST CROYDON",
+    "value": "EAST CROYDON",
+    "stationNameEncoded": "EAST%20CROYDON"
+  },
+  {
+    "id": 1001090,
+    "label": "EAST DULWICH",
+    "value": "EAST DULWICH",
+    "stationNameEncoded": "EAST%20DULWICH"
+  },
+  {
+    "id": 90002488,
+    "label": "EAST GRINSTEAD",
+    "value": "EAST GRINSTEAD",
+    "stationNameEncoded": "EAST%20GRINSTEAD"
+  },
+  {
+    "id": 1001597,
+    "label": "EAST WORTHING",
+    "value": "EAST WORTHING",
+    "stationNameEncoded": "EAST%20WORTHING"
+  },
+  {
+    "id": 1000517,
+    "label": "EASTBOURNE",
+    "value": "EASTBOURNE",
+    "stationNameEncoded": "EASTBOURNE"
+  },
+  {
+    "id": 90002505,
+    "label": "EASTLEIGH",
+    "value": "EASTLEIGH",
+    "stationNameEncoded": "EASTLEIGH"
+  },
+  {
+    "id": 90002464,
+    "label": "EDENBRIDGE",
+    "value": "EDENBRIDGE",
+    "stationNameEncoded": "EDENBRIDGE"
+  },
+  {
+    "id": 90002464,
+    "label": "EDENBRIDGE TOWN",
+    "value": "EDENBRIDGE TOWN",
+    "stationNameEncoded": "EDENBRIDGE%20TOWN"
+  },
+  {
+    "id": 1001512,
+    "label": "EFFINGHAM JUNCTION",
+    "value": "EFFINGHAM JUNCTION",
+    "stationNameEncoded": "EFFINGHAM%20JUNCTION"
+  },
+  {
+    "id": 1000073,
+    "label": "ELEPHANT & CASTLE",
+    "value": "ELEPHANT & CASTLE",
+    "stationNameEncoded": "ELEPHANT%20%26%20CASTLE"
+  },
+  {
+    "id": 1001096,
+    "label": "ELSTREE & BOREHAMWOOD",
+    "value": "ELSTREE & BOREHAMWOOD",
+    "stationNameEncoded": "ELSTREE%20%26%20BOREHAMWOOD"
+  },
+  {
+    "id": 1001915,
+    "label": "ELY",
+    "value": "ELY",
+    "stationNameEncoded": "ELY"
+  },
+  {
+    "id": 90002573,
+    "label": "EMSWORTH",
+    "value": "EMSWORTH",
+    "stationNameEncoded": "EMSWORTH"
+  },
+  {
+    "id": 1001099,
+    "label": "ENFIELD CHASE",
+    "value": "ENFIELD CHASE",
+    "stationNameEncoded": "ENFIELD%20CHASE"
+  },
+  {
+    "id": 1001553,
+    "label": "EPSOM",
+    "value": "EPSOM",
+    "stationNameEncoded": "EPSOM"
+  },
+  {
+    "id": 1001553,
+    "label": "EPSOM DOWNS",
+    "value": "EPSOM DOWNS",
+    "stationNameEncoded": "EPSOM%20DOWNS"
+  },
+  {
+    "id": 1001602,
+    "label": "ERIDGE",
+    "value": "ERIDGE",
+    "stationNameEncoded": "ERIDGE"
+  },
+  {
+    "id": 1001102,
+    "label": "ERITH",
+    "value": "ERITH",
+    "stationNameEncoded": "ERITH"
+  },
+  {
+    "id": 1001103,
+    "label": "ESSEX ROAD",
+    "value": "ESSEX ROAD",
+    "stationNameEncoded": "ESSEX%20ROAD"
+  },
+  {
+    "id": 1001534,
+    "label": "EWELL EAST",
+    "value": "EWELL EAST",
+    "stationNameEncoded": "EWELL%20EAST"
+  },
+  {
+    "id": 90002663,
+    "label": "EYNSFORD",
+    "value": "EYNSFORD",
+    "stationNameEncoded": "EYNSFORD"
+  },
+  {
+    "id": 1001905,
+    "label": "FALMER",
+    "value": "FALMER",
+    "stationNameEncoded": "FALMER"
+  },
+  {
+    "id": 90002680,
+    "label": "FAREHAM",
+    "value": "FAREHAM",
+    "stationNameEncoded": "FAREHAM"
+  },
+  {
+    "id": 1000080,
+    "label": "FARRINGDON",
+    "value": "FARRINGDON",
+    "stationNameEncoded": "FARRINGDON"
+  },
+  {
+    "id": 1001610,
+    "label": "FAYGATE",
+    "value": "FAYGATE",
+    "stationNameEncoded": "FAYGATE"
+  },
+  {
+    "id": 1000083,
+    "label": "FINSBURY PARK",
+    "value": "FINSBURY PARK",
+    "stationNameEncoded": "FINSBURY%20PARK"
+  },
+  {
+    "id": 1001613,
+    "label": "FISHBOURNE",
+    "value": "FISHBOURNE",
+    "stationNameEncoded": "FISHBOURNE"
+  },
+  {
+    "id": 1001617,
+    "label": "FISHERSGATE",
+    "value": "FISHERSGATE",
+    "stationNameEncoded": "FISHERSGATE"
+  },
+  {
+    "id": 90002748,
+    "label": "FLITWICK",
+    "value": "FLITWICK",
+    "stationNameEncoded": "FLITWICK"
+  },
+  {
+    "id": 1000226,
+    "label": "FORD",
+    "value": "FORD",
+    "stationNameEncoded": "FORD"
+  },
+  {
+    "id": 1001112,
+    "label": "FOREST HILL",
+    "value": "FOREST HILL",
+    "stationNameEncoded": "FOREST%20HILL"
+  },
+  {
+    "id": 1001908,
+    "label": "FOXTON",
+    "value": "FOXTON",
+    "stationNameEncoded": "FOXTON"
+  },
+  {
+    "id": 90002812,
+    "label": "FRATTON",
+    "value": "FRATTON",
+    "stationNameEncoded": "FRATTON"
+  },
+  {
+    "id": 1000932,
+    "label": "GATWICK",
+    "value": "GATWICK",
+    "stationNameEncoded": "GATWICK"
+  },
+  {
+    "id": 90002990,
+    "label": "GILLINGHAM",
+    "value": "GILLINGHAM",
+    "stationNameEncoded": "GILLINGHAM"
+  },
+  {
+    "id": 1001116,
+    "label": "GIPSY HILL",
+    "value": "GIPSY HILL",
+    "stationNameEncoded": "GIPSY%20HILL"
+  },
+  {
+    "id": 90003022,
+    "label": "GLYNDE",
+    "value": "GLYNDE",
+    "stationNameEncoded": "GLYNDE"
+  },
+  {
+    "id": 90003051,
+    "label": "GODSTONE",
+    "value": "GODSTONE",
+    "stationNameEncoded": "GODSTONE"
+  },
+  {
+    "id": 1001118,
+    "label": "GORDON HILL",
+    "value": "GORDON HILL",
+    "stationNameEncoded": "GORDON%20HILL"
+  },
+  {
+    "id": 1001626,
+    "label": "GORING BY SEA",
+    "value": "GORING BY SEA",
+    "stationNameEncoded": "GORING%20BY%20SEA"
+  },
+  {
+    "id": 1001341,
+    "label": "GRANGE PARK",
+    "value": "GRANGE PARK",
+    "stationNameEncoded": "GRANGE%20PARK"
+  },
+  {
+    "id": 1001540,
+    "label": "GRAVESEND",
+    "value": "GRAVESEND",
+    "stationNameEncoded": "GRAVESEND"
+  },
+  {
+    "id": 1001543,
+    "label": "GREENHITHE",
+    "value": "GREENHITHE",
+    "stationNameEncoded": "GREENHITHE"
+  },
+  {
+    "id": 1001123,
+    "label": "GREENWICH",
+    "value": "GREENWICH",
+    "stationNameEncoded": "GREENWICH"
+  },
+  {
+    "id": 1001424,
+    "label": "GUILDFORD",
+    "value": "GUILDFORD",
+    "stationNameEncoded": "GUILDFORD"
+  },
+  {
+    "id": 1001126,
+    "label": "HACKBRIDGE",
+    "value": "HACKBRIDGE",
+    "stationNameEncoded": "HACKBRIDGE"
+  },
+  {
+    "id": 1001130,
+    "label": "HADLEY WOOD",
+    "value": "HADLEY WOOD",
+    "stationNameEncoded": "HADLEY%20WOOD"
+  },
+  {
+    "id": 1001130,
+    "label": "HADLEY WOOD",
+    "value": "HADLEY WOOD",
+    "stationNameEncoded": "HADLEY%20WOOD"
+  },
+  {
+    "id": 1001631,
+    "label": "HAM STREET",
+    "value": "HAM STREET",
+    "stationNameEncoded": "HAM%20STREET"
+  },
+  {
+    "id": 90003522,
+    "label": "HAMBLE",
+    "value": "HAMBLE",
+    "stationNameEncoded": "HAMBLE"
+  },
+  {
+    "id": 1001629,
+    "label": "HAMPDEN PARK",
+    "value": "HAMPDEN PARK",
+    "stationNameEncoded": "HAMPDEN%20PARK"
+  },
+  {
+    "id": 1001144,
+    "label": "HARLINGTON",
+    "value": "HARLINGTON",
+    "stationNameEncoded": "HARLINGTON"
+  },
+  {
+    "id": 1000480,
+    "label": "HARPENDEN",
+    "value": "HARPENDEN",
+    "stationNameEncoded": "HARPENDEN"
+  },
+  {
+    "id": 1001139,
+    "label": "HARRINGAY",
+    "value": "HARRINGAY",
+    "stationNameEncoded": "HARRINGAY"
+  },
+  {
+    "id": 1000101,
+    "label": "HARROW & WEALDSTONE",
+    "value": "HARROW & WEALDSTONE",
+    "stationNameEncoded": "HARROW%20%26%20WEALDSTONE"
+  },
+  {
+    "id": 1001633,
+    "label": "HASSOCKS",
+    "value": "HASSOCKS",
+    "stationNameEncoded": "HASSOCKS"
+  },
+  {
+    "id": 1001416,
+    "label": "HASTINGS",
+    "value": "HASTINGS",
+    "stationNameEncoded": "HASTINGS"
+  },
+  {
+    "id": 1026129,
+    "label": "HATFIELD",
+    "value": "HATFIELD",
+    "stationNameEncoded": "HATFIELD"
+  },
+  {
+    "id": 90003325,
+    "label": "HAVANT",
+    "value": "HAVANT",
+    "stationNameEncoded": "HAVANT"
+  },
+  {
+    "id": 1001143,
+    "label": "HAYDONS ROAD",
+    "value": "HAYDONS ROAD",
+    "stationNameEncoded": "HAYDONS%20ROAD"
+  },
+  {
+    "id": 1001418,
+    "label": "HAYWARDS HEATH",
+    "value": "HAYWARDS HEATH",
+    "stationNameEncoded": "HAYWARDS%20HEATH"
+  },
+  {
+    "id": 1000812,
+    "label": "HEMEL HEMPSTEAD",
+    "value": "HEMEL HEMPSTEAD",
+    "stationNameEncoded": "HEMEL%20HEMPSTEAD"
+  },
+  {
+    "id": 1001148,
+    "label": "HENDON",
+    "value": "HENDON",
+    "stationNameEncoded": "HENDON"
+  },
+  {
+    "id": 1001149,
+    "label": "HERNE HILL",
+    "value": "HERNE HILL",
+    "stationNameEncoded": "HERNE%20HILL"
+  },
+  {
+    "id": 1026132,
+    "label": "HERTFORD NORTH",
+    "value": "HERTFORD NORTH",
+    "stationNameEncoded": "HERTFORD%20NORTH"
+  },
+  {
+    "id": 90003422,
+    "label": "HEVER",
+    "value": "HEVER",
+    "stationNameEncoded": "HEVER"
+  },
+  {
+    "id": 1001150,
+    "label": "HIGHAM",
+    "value": "HIGHAM",
+    "stationNameEncoded": "HIGHAM"
+  },
+  {
+    "id": 1000108,
+    "label": "HIGHBURY & ISLINGTON",
+    "value": "HIGHBURY & ISLINGTON",
+    "stationNameEncoded": "HIGHBURY%20%26%20ISLINGTON"
+  },
+  {
+    "id": 90003453,
+    "label": "HILSEA",
+    "value": "HILSEA",
+    "stationNameEncoded": "HILSEA"
+  },
+  {
+    "id": 1000465,
+    "label": "HITCHIN",
+    "value": "HITCHIN",
+    "stationNameEncoded": "HITCHIN"
+  },
+  {
+    "id": 90003489,
+    "label": "HOLMWOOD",
+    "value": "HOLMWOOD",
+    "stationNameEncoded": "HOLMWOOD"
+  },
+  {
+    "id": 1001154,
+    "label": "HONOR OAK PARK",
+    "value": "HONOR OAK PARK",
+    "stationNameEncoded": "HONOR%20OAK%20PARK"
+  },
+  {
+    "id": 1000049,
+    "label": "HORLEY",
+    "value": "HORLEY",
+    "stationNameEncoded": "HORLEY"
+  },
+  {
+    "id": 1001155,
+    "label": "HORNSEY",
+    "value": "HORNSEY",
+    "stationNameEncoded": "HORNSEY"
+  },
+  {
+    "id": 1001640,
+    "label": "HORSHAM",
+    "value": "HORSHAM",
+    "stationNameEncoded": "HORSHAM"
+  },
+  {
+    "id": 1001513,
+    "label": "HORSLEY",
+    "value": "HORSLEY",
+    "stationNameEncoded": "HORSLEY"
+  },
+  {
+    "id": 90003633,
+    "label": "HOVE",
+    "value": "HOVE",
+    "stationNameEncoded": "HOVE"
+  },
+  {
+    "id": 1001917,
+    "label": "HUNTINGDON",
+    "value": "HUNTINGDON",
+    "stationNameEncoded": "HUNTINGDON"
+  },
+  {
+    "id": 1001643,
+    "label": "HURST GREEN",
+    "value": "HURST GREEN",
+    "stationNameEncoded": "HURST%20GREEN"
+  },
+  {
+    "id": 90003386,
+    "label": "IFIELD",
+    "value": "IFIELD",
+    "stationNameEncoded": "IFIELD"
+  },
+  {
+    "id": 1001347,
+    "label": "IMPERIAL WHARF",
+    "value": "IMPERIAL WHARF",
+    "stationNameEncoded": "IMPERIAL%20WHARF"
+  },
+  {
+    "id": 1001159,
+    "label": "KENLEY",
+    "value": "KENLEY",
+    "stationNameEncoded": "KENLEY"
+  },
+  {
+    "id": 1000170,
+    "label": "KENSINGTON OLYMPIA",
+    "value": "KENSINGTON OLYMPIA",
+    "stationNameEncoded": "KENSINGTON%20OLYMPIA"
+  },
+  {
+    "id": 1001163,
+    "label": "KENT HOUSE",
+    "value": "KENT HOUSE",
+    "stationNameEncoded": "KENT%20HOUSE"
+  },
+  {
+    "id": 1000123,
+    "label": "KENTISH TOWN",
+    "value": "KENTISH TOWN",
+    "stationNameEncoded": "KENTISH%20TOWN"
+  },
+  {
+    "id": 1000129,
+    "label": "KINGS CROSS",
+    "value": "KINGS CROSS",
+    "stationNameEncoded": "KINGS%20CROSS"
+  },
+  {
+    "id": 90004091,
+    "label": "KINGS LYNN",
+    "value": "KINGS LYNN",
+    "stationNameEncoded": "KINGS%20LYNN"
+  },
+  {
+    "id": 1001558,
+    "label": "KINGSWOOD",
+    "value": "KINGSWOOD",
+    "stationNameEncoded": "KINGSWOOD"
+  },
+  {
+    "id": 1000468,
+    "label": "KNEBWORTH",
+    "value": "KNEBWORTH",
+    "stationNameEncoded": "KNEBWORTH"
+  },
+  {
+    "id": 1001653,
+    "label": "LANCING",
+    "value": "LANCING",
+    "stationNameEncoded": "LANCING"
+  },
+  {
+    "id": 90004300,
+    "label": "LEAGRAVE",
+    "value": "LEAGRAVE",
+    "stationNameEncoded": "LEAGRAVE"
+  },
+  {
+    "id": 1001510,
+    "label": "LEATHERHEAD",
+    "value": "LEATHERHEAD",
+    "stationNameEncoded": "LEATHERHEAD"
+  },
+  {
+    "id": 1001218,
+    "label": "LEIGH",
+    "value": "LEIGH",
+    "stationNameEncoded": "LEIGH"
+  },
+  {
+    "id": 1000523,
+    "label": "LEIGHTON BUZZARD",
+    "value": "LEIGHTON BUZZARD",
+    "stationNameEncoded": "LEIGHTON%20BUZZARD"
+  },
+  {
+    "id": 1000460,
+    "label": "LETCHWORTH GARDEN CITY",
+    "value": "LETCHWORTH GARDEN CITY",
+    "stationNameEncoded": "LETCHWORTH%20GARDEN%20CITY"
+  },
+  {
+    "id": 1001661,
+    "label": "LEWES",
+    "value": "LEWES",
+    "stationNameEncoded": "LEWES"
+  },
+  {
+    "id": 90004408,
+    "label": "LINGFIELD",
+    "value": "LINGFIELD",
+    "stationNameEncoded": "LINGFIELD"
+  },
+  {
+    "id": 1001665,
+    "label": "LITTLEHAMPTON",
+    "value": "LITTLEHAMPTON",
+    "stationNameEncoded": "LITTLEHAMPTON"
+  },
+  {
+    "id": 1001669,
+    "label": "LITTLEHAVEN",
+    "value": "LITTLEHAVEN",
+    "stationNameEncoded": "LITTLEHAVEN"
+  },
+  {
+    "id": 1001927,
+    "label": "LITTLEPORT",
+    "value": "LITTLEPORT",
+    "stationNameEncoded": "LITTLEPORT"
+  },
+  {
+    "id": 1000139,
+    "label": "LONDON BRIDGE",
+    "value": "LONDON BRIDGE",
+    "stationNameEncoded": "LONDON%20BRIDGE"
+  },
+  {
+    "id": 90000896,
+    "label": "LONDON ROAD (BRIGHTON)",
+    "value": "LONDON ROAD (BRIGHTON)",
+    "stationNameEncoded": "LONDON%20ROAD%20(BRIGHTON)"
+  },
+  {
+    "id": 90004580,
+    "label": "LONDON ROAD (GUILDFORD)",
+    "value": "LONDON ROAD (GUILDFORD)",
+    "stationNameEncoded": "LONDON%20ROAD%20(GUILDFORD)"
+  },
+  {
+    "id": 1001184,
+    "label": "LOUGHBOROUGH JUNCTION",
+    "value": "LOUGHBOROUGH JUNCTION",
+    "stationNameEncoded": "LOUGHBOROUGH%20JUNCTION"
+  },
+  {
+    "id": 1001678,
+    "label": "LUTON",
+    "value": "LUTON",
+    "stationNameEncoded": "LUTON"
+  },
+  {
+    "id": 1001678,
+    "label": "LUTON AIRPORT PARKWAY",
+    "value": "LUTON AIRPORT PARKWAY",
+    "stationNameEncoded": "LUTON%20AIRPORT%20PARKWAY"
+  },
+  {
+    "id": 1001490,
+    "label": "MAIDSTONE BARRACKS",
+    "value": "MAIDSTONE BARRACKS",
+    "stationNameEncoded": "MAIDSTONE%20BARRACKS"
+  },
+  {
+    "id": 1001487,
+    "label": "MAIDSTONE EAST",
+    "value": "MAIDSTONE EAST",
+    "stationNameEncoded": "MAIDSTONE%20EAST"
+  },
+  {
+    "id": 90005115,
+    "label": "MAIDSTONE WEST",
+    "value": "MAIDSTONE WEST",
+    "stationNameEncoded": "MAIDSTONE%20WEST"
+  },
+  {
+    "id": 1001192,
+    "label": "MAZE HILL",
+    "value": "MAZE HILL",
+    "stationNameEncoded": "MAZE%20HILL"
+  },
+  {
+    "id": 90004797,
+    "label": "MELDRETH",
+    "value": "MELDRETH",
+    "stationNameEncoded": "MELDRETH"
+  },
+  {
+    "id": 1001527,
+    "label": "MERSTHAM",
+    "value": "MERSTHAM",
+    "stationNameEncoded": "MERSTHAM"
+  },
+  {
+    "id": 1001193,
+    "label": "MILL HILL BROADWAY",
+    "value": "MILL HILL BROADWAY",
+    "stationNameEncoded": "MILL%20HILL%20BROADWAY"
+  },
+  {
+    "id": 90004873,
+    "label": "MILTON KEYNES CENTRAL",
+    "value": "MILTON KEYNES CENTRAL",
+    "stationNameEncoded": "MILTON%20KEYNES%20CENTRAL"
+  },
+  {
+    "id": 1001555,
+    "label": "MITCHAM EASTFIELDS",
+    "value": "MITCHAM EASTFIELDS",
+    "stationNameEncoded": "MITCHAM%20EASTFIELDS"
+  },
+  {
+    "id": 1001194,
+    "label": "MITCHAM JUNCTION",
+    "value": "MITCHAM JUNCTION",
+    "stationNameEncoded": "MITCHAM%20JUNCTION"
+  },
+  {
+    "id": 1000149,
+    "label": "MOORGATE",
+    "value": "MOORGATE",
+    "stationNameEncoded": "MOORGATE"
+  },
+  {
+    "id": 1001197,
+    "label": "MORDEN SOUTH",
+    "value": "MORDEN SOUTH",
+    "stationNameEncoded": "MORDEN%20SOUTH"
+  },
+  {
+    "id": 90004909,
+    "label": "MOULSECOOMB",
+    "value": "MOULSECOOMB",
+    "stationNameEncoded": "MOULSECOOMB"
+  },
+  {
+    "id": 90005182,
+    "label": "NETLEY",
+    "value": "NETLEY",
+    "stationNameEncoded": "NETLEY"
+  },
+  {
+    "id": 1001201,
+    "label": "NEW BARNET",
+    "value": "NEW BARNET",
+    "stationNameEncoded": "NEW%20BARNET"
+  },
+  {
+    "id": 1000156,
+    "label": "NEW CROSS GATE",
+    "value": "NEW CROSS GATE",
+    "stationNameEncoded": "NEW%20CROSS%20GATE"
+  },
+  {
+    "id": 1001207,
+    "label": "NEW SOUTHGATE",
+    "value": "NEW SOUTHGATE",
+    "stationNameEncoded": "NEW%20SOUTHGATE"
+  },
+  {
+    "id": 1001207,
+    "label": "NEW SOUTHGATE",
+    "value": "NEW SOUTHGATE",
+    "stationNameEncoded": "NEW%20SOUTHGATE"
+  },
+  {
+    "id": 1001685,
+    "label": "NEWHAVEN HARBOUR",
+    "value": "NEWHAVEN HARBOUR",
+    "stationNameEncoded": "NEWHAVEN%20HARBOUR"
+  },
+  {
+    "id": 1001686,
+    "label": "NEWHAVEN TOWN",
+    "value": "NEWHAVEN TOWN",
+    "stationNameEncoded": "NEWHAVEN%20TOWN"
+  },
+  {
+    "id": 1001209,
+    "label": "NORBURY",
+    "value": "NORBURY",
+    "stationNameEncoded": "NORBURY"
+  },
+  {
+    "id": 1001689,
+    "label": "NORMAN'S BAY",
+    "value": "NORMAN'S BAY",
+    "stationNameEncoded": "NORMAN%27S%20BAY"
+  },
+  {
+    "id": 1001210,
+    "label": "NORTH DULWICH",
+    "value": "NORTH DULWICH",
+    "stationNameEncoded": "NORTH%20DULWICH"
+  },
+  {
+    "id": 1001541,
+    "label": "NORTHFLEET",
+    "value": "NORTHFLEET",
+    "stationNameEncoded": "NORTHFLEET"
+  },
+  {
+    "id": 1001216,
+    "label": "NORWOOD JUNCTION",
+    "value": "NORWOOD JUNCTION",
+    "stationNameEncoded": "NORWOOD%20JUNCTION"
+  },
+  {
+    "id": 1001217,
+    "label": "NUNHEAD",
+    "value": "NUNHEAD",
+    "stationNameEncoded": "NUNHEAD"
+  },
+  {
+    "id": 1001691,
+    "label": "NUTBOURNE",
+    "value": "NUTBOURNE",
+    "stationNameEncoded": "NUTBOURNE"
+  },
+  {
+    "id": 1001693,
+    "label": "NUTFIELD",
+    "value": "NUTFIELD",
+    "stationNameEncoded": "NUTFIELD"
+  },
+  {
+    "id": 1001218,
+    "label": "OAKLEIGH PARK",
+    "value": "OAKLEIGH PARK",
+    "stationNameEncoded": "OAKLEIGH%20PARK"
+  },
+  {
+    "id": 1001218,
+    "label": "OAKLEIGH PARK",
+    "value": "OAKLEIGH PARK",
+    "stationNameEncoded": "OAKLEIGH%20PARK"
+  },
+  {
+    "id": 1001035,
+    "label": "OCKLEY",
+    "value": "OCKLEY",
+    "stationNameEncoded": "OCKLEY"
+  },
+  {
+    "id": 1000169,
+    "label": "OLD STREET",
+    "value": "OLD STREET",
+    "stationNameEncoded": "OLD%20STREET"
+  },
+  {
+    "id": 1001571,
+    "label": "ORE",
+    "value": "ORE",
+    "stationNameEncoded": "ORE"
+  },
+  {
+    "id": 1001220,
+    "label": "ORPINGTON",
+    "value": "ORPINGTON",
+    "stationNameEncoded": "ORPINGTON"
+  },
+  {
+    "id": 1001606,
+    "label": "OTFORD",
+    "value": "OTFORD",
+    "stationNameEncoded": "OTFORD"
+  },
+  {
+    "id": 1001695,
+    "label": "OXTED",
+    "value": "OXTED",
+    "stationNameEncoded": "OXTED"
+  },
+  {
+    "id": 1001222,
+    "label": "PALMERS GREEN",
+    "value": "PALMERS GREEN",
+    "stationNameEncoded": "PALMERS%20GREEN"
+  },
+  {
+    "id": 1001223,
+    "label": "PECKHAM RYE",
+    "value": "PECKHAM RYE",
+    "stationNameEncoded": "PECKHAM%20RYE"
+  },
+  {
+    "id": 1001224,
+    "label": "PENGE EAST",
+    "value": "PENGE EAST",
+    "stationNameEncoded": "PENGE%20EAST"
+  },
+  {
+    "id": 1001225,
+    "label": "PENGE WEST",
+    "value": "PENGE WEST",
+    "stationNameEncoded": "PENGE%20WEST"
+  },
+  {
+    "id": 1001701,
+    "label": "PENSHURST",
+    "value": "PENSHURST",
+    "stationNameEncoded": "PENSHURST"
+  },
+  {
+    "id": 90005544,
+    "label": "PETERBOROUGH",
+    "value": "PETERBOROUGH",
+    "stationNameEncoded": "PETERBOROUGH"
+  },
+  {
+    "id": 1001226,
+    "label": "PETTS WOOD",
+    "value": "PETTS WOOD",
+    "stationNameEncoded": "PETTS%20WOOD"
+  },
+  {
+    "id": 1001703,
+    "label": "PEVENSEY & WESTHAM",
+    "value": "PEVENSEY & WESTHAM",
+    "stationNameEncoded": "PEVENSEY%20%26%20WESTHAM"
+  },
+  {
+    "id": 1001707,
+    "label": "PEVENSEY BAY",
+    "value": "PEVENSEY BAY",
+    "stationNameEncoded": "PEVENSEY%20BAY"
+  },
+  {
+    "id": 1001709,
+    "label": "PLUMPTON",
+    "value": "PLUMPTON",
+    "stationNameEncoded": "PLUMPTON"
+  },
+  {
+    "id": 1001227,
+    "label": "PLUMSTEAD",
+    "value": "PLUMSTEAD",
+    "stationNameEncoded": "PLUMSTEAD"
+  },
+  {
+    "id": 1001712,
+    "label": "POLEGATE",
+    "value": "POLEGATE",
+    "stationNameEncoded": "POLEGATE"
+  },
+  {
+    "id": 90005574,
+    "label": "PORTCHESTER",
+    "value": "PORTCHESTER",
+    "stationNameEncoded": "PORTCHESTER"
+  },
+  {
+    "id": 90005853,
+    "label": "PORTSLADE",
+    "value": "PORTSLADE",
+    "stationNameEncoded": "PORTSLADE"
+  },
+  {
+    "id": 90005849,
+    "label": "PORTSMOUTH & SOUTHSEA",
+    "value": "PORTSMOUTH & SOUTHSEA",
+    "stationNameEncoded": "PORTSMOUTH%20%26%20SOUTHSEA"
+  },
+  {
+    "id": 90005641,
+    "label": "PORTSMOUTH HARBOUR",
+    "value": "PORTSMOUTH HARBOUR",
+    "stationNameEncoded": "PORTSMOUTH%20HARBOUR"
+  },
+  {
+    "id": 1011145,
+    "label": "POTTERS BAR",
+    "value": "POTTERS BAR",
+    "stationNameEncoded": "POTTERS%20BAR"
+  },
+  {
+    "id": 90005811,
+    "label": "PRESTON PARK",
+    "value": "PRESTON PARK",
+    "stationNameEncoded": "PRESTON%20PARK"
+  },
+  {
+    "id": 90005887,
+    "label": "PULBOROUGH",
+    "value": "PULBOROUGH",
+    "stationNameEncoded": "PULBOROUGH"
+  },
+  {
+    "id": 1001229,
+    "label": "PURLEY",
+    "value": "PURLEY",
+    "stationNameEncoded": "PURLEY"
+  },
+  {
+    "id": 1001230,
+    "label": "PURLEY OAKS",
+    "value": "PURLEY OAKS",
+    "stationNameEncoded": "PURLEY%20OAKS"
+  },
+  {
+    "id": 1001233,
+    "label": "QUEENS ROAD PECKHAM",
+    "value": "QUEENS ROAD PECKHAM",
+    "stationNameEncoded": "QUEENS%20ROAD%20PECKHAM"
+  },
+  {
+    "id": 1000486,
+    "label": "RADLETT",
+    "value": "RADLETT",
+    "stationNameEncoded": "RADLETT"
+  },
+  {
+    "id": 1001235,
+    "label": "RAINHAM",
+    "value": "RAINHAM",
+    "stationNameEncoded": "RAINHAM"
+  },
+  {
+    "id": 1001236,
+    "label": "RAVENSBOURNE",
+    "value": "RAVENSBOURNE",
+    "stationNameEncoded": "RAVENSBOURNE"
+  },
+  {
+    "id": 1001721,
+    "label": "REDHILL",
+    "value": "REDHILL",
+    "stationNameEncoded": "REDHILL"
+  },
+  {
+    "id": 1001239,
+    "label": "REEDHAM",
+    "value": "REEDHAM",
+    "stationNameEncoded": "REEDHAM"
+  },
+  {
+    "id": 1001722,
+    "label": "REIGATE",
+    "value": "REIGATE",
+    "stationNameEncoded": "REIGATE"
+  },
+  {
+    "id": 1001242,
+    "label": "RIDDLESDOWN",
+    "value": "RIDDLESDOWN",
+    "stationNameEncoded": "RIDDLESDOWN"
+  },
+  {
+    "id": 90005970,
+    "label": "ROCHESTER",
+    "value": "ROCHESTER",
+    "stationNameEncoded": "ROCHESTER"
+  },
+  {
+    "id": 1000459,
+    "label": "ROYSTON",
+    "value": "ROYSTON",
+    "stationNameEncoded": "ROYSTON"
+  },
+  {
+    "id": 1001223,
+    "label": "RYE",
+    "value": "RYE",
+    "stationNameEncoded": "RYE"
+  },
+  {
+    "id": 90006250,
+    "label": "SALFORDS",
+    "value": "SALFORDS",
+    "stationNameEncoded": "SALFORDS"
+  },
+  {
+    "id": 1001244,
+    "label": "SANDERSTEAD",
+    "value": "SANDERSTEAD",
+    "stationNameEncoded": "SANDERSTEAD"
+  },
+  {
+    "id": 1001741,
+    "label": "SANDY",
+    "value": "SANDY",
+    "stationNameEncoded": "SANDY"
+  },
+  {
+    "id": 1001744,
+    "label": "SEAFORD",
+    "value": "SEAFORD",
+    "stationNameEncoded": "SEAFORD"
+  },
+  {
+    "id": 1001245,
+    "label": "SELHURST",
+    "value": "SELHURST",
+    "stationNameEncoded": "SELHURST"
+  },
+  {
+    "id": 1001748,
+    "label": "SEVENOAKS",
+    "value": "SEVENOAKS",
+    "stationNameEncoded": "SEVENOAKS"
+  },
+  {
+    "id": 1000203,
+    "label": "SHEPHERDS BUSH",
+    "value": "SHEPHERDS BUSH",
+    "stationNameEncoded": "SHEPHERDS%20BUSH"
+  },
+  {
+    "id": 1001953,
+    "label": "SHEPRETH",
+    "value": "SHEPRETH",
+    "stationNameEncoded": "SHEPRETH"
+  },
+  {
+    "id": 90006475,
+    "label": "SHOLING",
+    "value": "SHOLING",
+    "stationNameEncoded": "SHOLING"
+  },
+  {
+    "id": 90006506,
+    "label": "SHOREHAM (KENT)",
+    "value": "SHOREHAM (KENT)",
+    "stationNameEncoded": "SHOREHAM%20(KENT)"
+  },
+  {
+    "id": 1001766,
+    "label": "SHOREHAM-BY-SEA",
+    "value": "SHOREHAM-BY-SEA",
+    "stationNameEncoded": "SHOREHAM-BY-SEA"
+  },
+  {
+    "id": 1001248,
+    "label": "SHORTLANDS",
+    "value": "SHORTLANDS",
+    "stationNameEncoded": "SHORTLANDS"
+  },
+  {
+    "id": 1001252,
+    "label": "SLADE GREEN",
+    "value": "SLADE GREEN",
+    "stationNameEncoded": "SLADE%20GREEN"
+  },
+  {
+    "id": 1001256,
+    "label": "SOUTH BERMONDSEY",
+    "value": "SOUTH BERMONDSEY",
+    "stationNameEncoded": "SOUTH%20BERMONDSEY"
+  },
+  {
+    "id": 1001258,
+    "label": "SOUTH CROYDON",
+    "value": "SOUTH CROYDON",
+    "stationNameEncoded": "SOUTH%20CROYDON"
+  },
+  {
+    "id": 1001262,
+    "label": "SOUTH MERTON",
+    "value": "SOUTH MERTON",
+    "stationNameEncoded": "SOUTH%20MERTON"
+  },
+  {
+    "id": 90006706,
+    "label": "SOUTHAMPTON AIRPORT PARKWAY",
+    "value": "SOUTHAMPTON AIRPORT PARKWAY",
+    "stationNameEncoded": "SOUTHAMPTON%20AIRPORT%20PARKWAY"
+  },
+  {
+    "id": 90006699,
+    "label": "SOUTHAMPTON CENTRAL",
+    "value": "SOUTHAMPTON CENTRAL",
+    "stationNameEncoded": "SOUTHAMPTON%20CENTRAL"
+  },
+  {
+    "id": 1001773,
+    "label": "SOUTHBOURNE",
+    "value": "SOUTHBOURNE",
+    "stationNameEncoded": "SOUTHBOURNE"
+  },
+  {
+    "id": 1001776,
+    "label": "SOUTHEASE",
+    "value": "SOUTHEASE",
+    "stationNameEncoded": "SOUTHEASE"
+  },
+  {
+    "id": 1001778,
+    "label": "SOUTHWICK",
+    "value": "SOUTHWICK",
+    "stationNameEncoded": "SOUTHWICK"
+  },
+  {
+    "id": 1000482,
+    "label": "ST ALBANS CITY",
+    "value": "ST ALBANS CITY",
+    "stationNameEncoded": "ST%20ALBANS%20CITY"
+  },
+  {
+    "id": 90006800,
+    "label": "ST DENYS",
+    "value": "ST DENYS",
+    "stationNameEncoded": "ST%20DENYS"
+  },
+  {
+    "id": 1001267,
+    "label": "ST HELIER",
+    "value": "ST HELIER",
+    "stationNameEncoded": "ST%20HELIER"
+  },
+  {
+    "id": 1001783,
+    "label": "ST LEONARDS WARRIER SQUARE",
+    "value": "ST LEONARDS WARRIER SQUARE",
+    "stationNameEncoded": "ST%20LEONARDS%20WARRIER%20SQUARE"
+  },
+  {
+    "id": 1001271,
+    "label": "ST MARY CRAY",
+    "value": "ST MARY CRAY",
+    "stationNameEncoded": "ST%20MARY%20CRAY"
+  },
+  {
+    "id": 1001784,
+    "label": "ST NEOTS",
+    "value": "ST NEOTS",
+    "stationNameEncoded": "ST%20NEOTS"
+  },
+  {
+    "id": 1000129,
+    "label": "ST PANCRAS INTERNATIONAL",
+    "value": "ST PANCRAS INTERNATIONAL",
+    "stationNameEncoded": "ST%20PANCRAS%20INTERNATIONAL"
+  },
+  {
+    "id": 1023126,
+    "label": "STEVENAGE",
+    "value": "STEVENAGE",
+    "stationNameEncoded": "STEVENAGE"
+  },
+  {
+    "id": 90006795,
+    "label": "STONE CROSSING",
+    "value": "STONE CROSSING",
+    "stationNameEncoded": "STONE%20CROSSING"
+  },
+  {
+    "id": 1001279,
+    "label": "STREATHAM",
+    "value": "STREATHAM",
+    "stationNameEncoded": "STREATHAM"
+  },
+  {
+    "id": 1001280,
+    "label": "STREATHAM COMMON",
+    "value": "STREATHAM COMMON",
+    "stationNameEncoded": "STREATHAM%20COMMON"
+  },
+  {
+    "id": 1001281,
+    "label": "STREATHAM HILL",
+    "value": "STREATHAM HILL",
+    "stationNameEncoded": "STREATHAM%20HILL"
+  },
+  {
+    "id": 90006982,
+    "label": "STROOD",
+    "value": "STROOD",
+    "stationNameEncoded": "STROOD"
+  },
+  {
+    "id": 1001286,
+    "label": "SUTTON",
+    "value": "SUTTON",
+    "stationNameEncoded": "SUTTON"
+  },
+  {
+    "id": 1001802,
+    "label": "SWANLEY",
+    "value": "SWANLEY",
+    "stationNameEncoded": "SWANLEY"
+  },
+  {
+    "id": 1001542,
+    "label": "SWANSCOMBE",
+    "value": "SWANSCOMBE",
+    "stationNameEncoded": "SWANSCOMBE"
+  },
+  {
+    "id": 90007073,
+    "label": "SWANWICK",
+    "value": "SWANWICK",
+    "stationNameEncoded": "SWANWICK"
+  },
+  {
+    "id": 1001289,
+    "label": "SYDENHAM",
+    "value": "SYDENHAM",
+    "stationNameEncoded": "SYDENHAM"
+  },
+  {
+    "id": 1001290,
+    "label": "SYDENHAM HILL",
+    "value": "SYDENHAM HILL",
+    "stationNameEncoded": "SYDENHAM%20HILL"
+  },
+  {
+    "id": 1001572,
+    "label": "TADWORTH",
+    "value": "TADWORTH",
+    "stationNameEncoded": "TADWORTH"
+  },
+  {
+    "id": 1001560,
+    "label": "TATTENHAM CORNER",
+    "value": "TATTENHAM CORNER",
+    "stationNameEncoded": "TATTENHAM%20CORNER"
+  },
+  {
+    "id": 1001294,
+    "label": "THORNTON HEATH",
+    "value": "THORNTON HEATH",
+    "stationNameEncoded": "THORNTON%20HEATH"
+  },
+  {
+    "id": 1001817,
+    "label": "THREE BRIDGES",
+    "value": "THREE BRIDGES",
+    "stationNameEncoded": "THREE%20BRIDGES"
+  },
+  {
+    "id": 1001822,
+    "label": "THREE OAKS",
+    "value": "THREE OAKS",
+    "stationNameEncoded": "THREE%20OAKS"
+  },
+  {
+    "id": 90000051,
+    "label": "TONBRIDGE",
+    "value": "TONBRIDGE",
+    "stationNameEncoded": "TONBRIDGE"
+  },
+  {
+    "id": 1001296,
+    "label": "TOOTING",
+    "value": "TOOTING",
+    "stationNameEncoded": "TOOTING"
+  },
+  {
+    "id": 1001010,
+    "label": "TRING",
+    "value": "TRING",
+    "stationNameEncoded": "TRING"
+  },
+  {
+    "id": 1001298,
+    "label": "TULSE HILL",
+    "value": "TULSE HILL",
+    "stationNameEncoded": "TULSE%20HILL"
+  },
+  {
+    "id": 1001957,
+    "label": "UCKFIELD",
+    "value": "UCKFIELD",
+    "stationNameEncoded": "UCKFIELD"
+  },
+  {
+    "id": 1001538,
+    "label": "UPPER WARLINGHAM",
+    "value": "UPPER WARLINGHAM",
+    "stationNameEncoded": "UPPER%20WARLINGHAM"
+  },
+  {
+    "id": 1000248,
+    "label": "VICTORIA",
+    "value": "VICTORIA",
+    "stationNameEncoded": "VICTORIA"
+  },
+  {
+    "id": 1001305,
+    "label": "WADDON",
+    "value": "WADDON",
+    "stationNameEncoded": "WADDON"
+  },
+  {
+    "id": 1001306,
+    "label": "WALLINGTON",
+    "value": "WALLINGTON",
+    "stationNameEncoded": "WALLINGTON"
+  },
+  {
+    "id": 1001309,
+    "label": "WANDSWORTH COMMON",
+    "value": "WANDSWORTH COMMON",
+    "stationNameEncoded": "WANDSWORTH%20COMMON"
+  },
+  {
+    "id": 1001310,
+    "label": "WANDSWORTH ROAD",
+    "value": "WANDSWORTH ROAD",
+    "stationNameEncoded": "WANDSWORTH%20ROAD"
+  },
+  {
+    "id": 90008036,
+    "label": "WARBLINGTON",
+    "value": "WARBLINGTON",
+    "stationNameEncoded": "WARBLINGTON"
+  },
+  {
+    "id": 1001832,
+    "label": "WARNHAM",
+    "value": "WARNHAM",
+    "stationNameEncoded": "WARNHAM"
+  },
+  {
+    "id": 1001960,
+    "label": "WATERBEACH",
+    "value": "WATERBEACH",
+    "stationNameEncoded": "WATERBEACH"
+  },
+  {
+    "id": 1001317,
+    "label": "WATFORD JUNCTION",
+    "value": "WATFORD JUNCTION",
+    "stationNameEncoded": "WATFORD%20JUNCTION"
+  },
+  {
+    "id": 90007600,
+    "label": "WATLINGTON",
+    "value": "WATLINGTON",
+    "stationNameEncoded": "WATLINGTON"
+  },
+  {
+    "id": 1000474,
+    "label": "WATTON AT STONE",
+    "value": "WATTON AT STONE",
+    "stationNameEncoded": "WATTON%20AT%20STONE"
+  },
+  {
+    "id": 1000478,
+    "label": "WELHAM GREEN",
+    "value": "WELHAM GREEN",
+    "stationNameEncoded": "WELHAM%20GREEN"
+  },
+  {
+    "id": 1000455,
+    "label": "WELWYN GARDEN CITY",
+    "value": "WELWYN GARDEN CITY",
+    "stationNameEncoded": "WELWYN%20GARDEN%20CITY"
+  },
+  {
+    "id": 1000470,
+    "label": "WELWYN NORTH",
+    "value": "WELWYN NORTH",
+    "stationNameEncoded": "WELWYN%20NORTH"
+  },
+  {
+    "id": 1000256,
+    "label": "WEMBLEY CENTRAL",
+    "value": "WEMBLEY CENTRAL",
+    "stationNameEncoded": "WEMBLEY%20CENTRAL"
+  },
+  {
+    "id": 1000260,
+    "label": "WEST BROMPTON",
+    "value": "WEST BROMPTON",
+    "stationNameEncoded": "WEST%20BROMPTON"
+  },
+  {
+    "id": 1001324,
+    "label": "WEST CROYDON",
+    "value": "WEST CROYDON",
+    "stationNameEncoded": "WEST%20CROYDON"
+  },
+  {
+    "id": 1001326,
+    "label": "WEST DULWICH",
+    "value": "WEST DULWICH",
+    "stationNameEncoded": "WEST%20DULWICH"
+  },
+  {
+    "id": 1000263,
+    "label": "WEST HAMPSTEAD",
+    "value": "WEST HAMPSTEAD",
+    "stationNameEncoded": "WEST%20HAMPSTEAD"
+  },
+  {
+    "id": 1001331,
+    "label": "WEST NORWOOD",
+    "value": "WEST NORWOOD",
+    "stationNameEncoded": "WEST%20NORWOOD"
+  },
+  {
+    "id": 1001333,
+    "label": "WEST SUTTON",
+    "value": "WEST SUTTON",
+    "stationNameEncoded": "WEST%20SUTTON"
+  },
+  {
+    "id": 1001837,
+    "label": "WEST WORTHING",
+    "value": "WEST WORTHING",
+    "stationNameEncoded": "WEST%20WORTHING"
+  },
+  {
+    "id": 1001323,
+    "label": "WESTCOMBE PARK",
+    "value": "WESTCOMBE PARK",
+    "stationNameEncoded": "WESTCOMBE%20PARK"
+  },
+  {
+    "id": 1001536,
+    "label": "WHYTELEAFE",
+    "value": "WHYTELEAFE",
+    "stationNameEncoded": "WHYTELEAFE"
+  },
+  {
+    "id": 1001537,
+    "label": "WHYTELEAFE SOUTH",
+    "value": "WHYTELEAFE SOUTH",
+    "stationNameEncoded": "WHYTELEAFE%20SOUTH"
+  },
+  {
+    "id": 1000272,
+    "label": "WIMBLEDON",
+    "value": "WIMBLEDON",
+    "stationNameEncoded": "WIMBLEDON"
+  },
+  {
+    "id": 1001339,
+    "label": "WIMBLEDON CHASE",
+    "value": "WIMBLEDON CHASE",
+    "stationNameEncoded": "WIMBLEDON%20CHASE"
+  },
+  {
+    "id": 1001853,
+    "label": "WINCHELSEA",
+    "value": "WINCHELSEA",
+    "stationNameEncoded": "WINCHELSEA"
+  },
+  {
+    "id": 1001340,
+    "label": "WINCHMORE HILL",
+    "value": "WINCHMORE HILL",
+    "stationNameEncoded": "WINCHMORE%20HILL"
+  },
+  {
+    "id": 90008130,
+    "label": "WIVELSFIELD",
+    "value": "WIVELSFIELD",
+    "stationNameEncoded": "WIVELSFIELD"
+  },
+  {
+    "id": 1001567,
+    "label": "WOLDINGHAM",
+    "value": "WOLDINGHAM",
+    "stationNameEncoded": "WOLDINGHAM"
+  },
+  {
+    "id": 1001342,
+    "label": "WOODMANSTERNE",
+    "value": "WOODMANSTERNE",
+    "stationNameEncoded": "WOODMANSTERNE"
+  },
+  {
+    "id": 90008002,
+    "label": "WOOLSTON",
+    "value": "WOOLSTON",
+    "stationNameEncoded": "WOOLSTON"
+  },
+  {
+    "id": 1001344,
+    "label": "WOOLWICH ARSENAL",
+    "value": "WOOLWICH ARSENAL",
+    "stationNameEncoded": "WOOLWICH%20ARSENAL"
+  },
+  {
+    "id": 1001345,
+    "label": "WOOLWICH DOCKYARD",
+    "value": "WOOLWICH DOCKYARD",
+    "stationNameEncoded": "WOOLWICH%20DOCKYARD"
+  },
+  {
+    "id": 1001597,
+    "label": "WORTHING",
+    "value": "WORTHING",
+    "stationNameEncoded": "WORTHING"
+  }
+],
+      minLength: 2,
+      select: function( event, ui ) {
+        //log( "Selected: " + ui.item.label + " aka " + ui.item.id );
+         startingStationSelected = ui.item.id;
+        console.log("starting station ID", startingStationSelected);
+      }
+    });
+
+// time stuff below
+
+        $( "#timeBox" ).autocomplete({
+      source: [
+  {
+    "time": "0400",
+    "label": "0400",
+    "value": "0400"
+  },
+  {
+    "time": "0415",
+    "label": "0415",
+    "value": "0415"
+  },
+  {
+    "time": "0430",
+    "label": "0430",
+    "value": "0430"
+  },
+  {
+    "time": "0445",
+    "label": "0445",
+    "value": "0445"
+  },
+  {
+    "time": "0500",
+    "label": "0500",
+    "value": "0500"
+  },
+  {
+    "time": "0515",
+    "label": "0515",
+    "value": "0515"
+  },
+  {
+    "time": "0530",
+    "label": "0530",
+    "value": "0530"
+  },
+  {
+    "time": "0545",
+    "label": "0545",
+    "value": "0545"
+  },
+  {
+    "time": "0600",
+    "label": "0600",
+    "value": "0600"
+  },
+  {
+    "time": "0615",
+    "label": "0615",
+    "value": "0615"
+  },
+  {
+    "time": "0630",
+    "label": "0630",
+    "value": "0630"
+  },
+  {
+    "time": "0645",
+    "label": "0645",
+    "value": "0645"
+  },
+  {
+    "time": "0700",
+    "label": "0700",
+    "value": "0700"
+  },
+  {
+    "time": "0715",
+    "label": "0715",
+    "value": "0715"
+  },
+  {
+    "time": "0730",
+    "label": "0730",
+    "value": "0730"
+  },
+  {
+    "time": "0745",
+    "label": "0745",
+    "value": "0745"
+  },
+  {
+    "time": "0800",
+    "label": "0800",
+    "value": "0800"
+  },
+  {
+    "time": "0815",
+    "label": "0815",
+    "value": "0815"
+  },
+  {
+    "time": "0830",
+    "label": "0830",
+    "value": "0830"
+  },
+  {
+    "time": "0845",
+    "label": "0845",
+    "value": "0845"
+  },
+  {
+    "time": "0900",
+    "label": "0900",
+    "value": "0900"
+  },
+  {
+    "time": "0915",
+    "label": "0915",
+    "value": "0915"
+  },
+  {
+    "time": "0930",
+    "label": "0930",
+    "value": "0930"
+  },
+  {
+    "time": "0945",
+    "label": "0945",
+    "value": "0945"
+  },
+  {
+    "time": "1000",
+    "label": "1000",
+    "value": "1000"
+  },
+  {
+    "time": "1015",
+    "label": "1015",
+    "value": "1015"
+  },
+  {
+    "time": "1030",
+    "label": "1030",
+    "value": "1030"
+  },
+  {
+    "time": "1045",
+    "label": "1045",
+    "value": "1045"
+  },
+  {
+    "time": "1100",
+    "label": "1100",
+    "value": "1100"
+  },
+  {
+    "time": "1115",
+    "label": "1115",
+    "value": "1115"
+  },
+  {
+    "time": "1130",
+    "label": "1130",
+    "value": "1130"
+  },
+  {
+    "time": "1145",
+    "label": "1145",
+    "value": "1145"
+  },
+  {
+    "time": "1200",
+    "label": "1200",
+    "value": "1200"
+  },
+  {
+    "time": "1215",
+    "label": "1215",
+    "value": "1215"
+  },
+  {
+    "time": "1230",
+    "label": "1230",
+    "value": "1230"
+  },
+  {
+    "time": "1245",
+    "label": "1245",
+    "value": "1245"
+  },
+  {
+    "time": "1300",
+    "label": "1300",
+    "value": "1300"
+  },
+  {
+    "time": "1315",
+    "label": "1315",
+    "value": "1315"
+  },
+  {
+    "time": "1330",
+    "label": "1330",
+    "value": "1330"
+  },
+  {
+    "time": "1345",
+    "label": "1345",
+    "value": "1345"
+  },
+  {
+    "time": "1400",
+    "label": "1400",
+    "value": "1400"
+  },
+  {
+    "time": "1415",
+    "label": "1415",
+    "value": "1415"
+  },
+  {
+    "time": "1430",
+    "label": "1430",
+    "value": "1430"
+  },
+  {
+    "time": "1445",
+    "label": "1445",
+    "value": "1445"
+  },
+  {
+    "time": "1500",
+    "label": "1500",
+    "value": "1500"
+  },
+  {
+    "time": "1515",
+    "label": "1515",
+    "value": "1515"
+  },
+  {
+    "time": "1530",
+    "label": "1530",
+    "value": "1530"
+  },
+  {
+    "time": "1545",
+    "label": "1545",
+    "value": "1545"
+  },
+  {
+    "time": "1600",
+    "label": "1600",
+    "value": "1600"
+  },
+  {
+    "time": "1615",
+    "label": "1615",
+    "value": "1615"
+  },
+  {
+    "time": "1630",
+    "label": "1630",
+    "value": "1630"
+  },
+  {
+    "time": "1645",
+    "label": "1645",
+    "value": "1645"
+  },
+  {
+    "time": "1700",
+    "label": "1700",
+    "value": "1700"
+  },
+  {
+    "time": "1715",
+    "label": "1715",
+    "value": "1715"
+  },
+  {
+    "time": "1730",
+    "label": "1730",
+    "value": "1730"
+  },
+  {
+    "time": "1745",
+    "label": "1745",
+    "value": "1745"
+  },
+  {
+    "time": "1800",
+    "label": "1800",
+    "value": "1800"
+  },
+  {
+    "time": "1815",
+    "label": "1815",
+    "value": "1815"
+  },
+  {
+    "time": "1830",
+    "label": "1830",
+    "value": "1830"
+  },
+  {
+    "time": "1845",
+    "label": "1845",
+    "value": "1845"
+  },
+  {
+    "time": "1900",
+    "label": "1900",
+    "value": "1900"
+  },
+  {
+    "time": "1915",
+    "label": "1915",
+    "value": "1915"
+  },
+  {
+    "time": "1930",
+    "label": "1930",
+    "value": "1930"
+  },
+  {
+    "time": "1945",
+    "label": "1945",
+    "value": "1945"
+  },
+  {
+    "time": "2000",
+    "label": "2000",
+    "value": "2000"
+  },
+  {
+    "time": "2015",
+    "label": "2015",
+    "value": "2015"
+  },
+  {
+    "time": "2030",
+    "label": "2030",
+    "value": "2030"
+  },
+  {
+    "time": "2045",
+    "label": "2045",
+    "value": "2045"
+  },
+  {
+    "time": "2100",
+    "label": "2100",
+    "value": "2100"
+  },
+  {
+    "time": "2115",
+    "label": "2115",
+    "value": "2115"
+  },
+  {
+    "time": "2130",
+    "label": "2130",
+    "value": "2130"
+  },
+  {
+    "time": "2145",
+    "label": "2145",
+    "value": "2145"
+  },
+  {
+    "time": "2200",
+    "label": "2200",
+    "value": "2200"
+  },
+  {
+    "time": "2215",
+    "label": "2215",
+    "value": "2215"
+  },
+  {
+    "time": "2230",
+    "label": "2230",
+    "value": "2230"
+  },
+  {
+    "time": "2245",
+    "label": "2245",
+    "value": "2245"
+  },
+  {
+    "time": "2300",
+    "label": "2300",
+    "value": "2300"
+  },
+  {
+    "time": "2315",
+    "label": "2315",
+    "value": "2315"
+  },
+  {
+    "time": "2330",
+    "label": "2330",
+    "value": "2330"
+  },
+  {
+    "time": "2345",
+    "label": "2345",
+    "value": "2345"
+  },
+  {
+    "time": "0000",
+    "label": "0000",
+    "value": "0000"
+  },
+  {
+    "time": "0015",
+    "label": "0015",
+    "value": "0015"
+  },
+  {
+    "time": "0030",
+    "label": "0030",
+    "value": "0030"
+  },
+  {
+    "time": "0045",
+    "label": "0045",
+    "value": "0045"
+  },
+  {
+    "time": "0100",
+    "label": "0100",
+    "value": "0100"
+  },
+  {
+    "time": "0115",
+    "label": "0115",
+    "value": "0115"
+  },
+  {
+    "time": "0130",
+    "label": "0130",
+    "value": "0130"
+  }
+],
+      minLength: 1,
+      select: function( event, ui ) {
+      //  log( "Selected: " + ui.item.label + " aka " + ui.item.id );
+        departureTimeSelected = ui.item.time;
+        console.log("departure time selected", departureTimeSelected);
+      }
+    });
+
+
+  } );
+  </script>
+  <style>
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+</style>
+  <style type="text/css">
+    #all{
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    
+  }
+  #titleBlock{
+    font-size: 60px;
+  }
+  .inline{
+    display: inline
+  }
+  #codeBlock{
+
+  }
+  #nameBox{
+     font-size: 30px;
+  }
+  #title{
+  }
+  #subtitle{
+    font-size: 30px;
+  }
+  </style>
+</head>
+<body>
+  <div id="all">
+    <div id="titleBlock">
+       <div id="trainEmojiOne">🚂</div>
+       <div id="title">Your New Train</div>
+       <div id="subtitle">Thousands of train times change on May 20th. Use this tool to find out what's happened to your commute</div>
+    </div>
+    <div id="codeBlock">
+      <br>
+      <div class="ui-widget">
+        <div id="startBox">
+          Your starting station:
+        <input id="startingStation">
+        </div>
+        <div id="endBox">
+        Travelling to:
+        <input id="endingStation">
+        </div>
+        <div id="timeBoxContainer">
+        Your rough departure time:
+        <input id="timeBox">
+        </div>
+        <br>
+        <div class="widget" id="buttonDiv">
+          <input id="submitButton" type="submit" value="Show my new train time">
+        </div>
+        <br>
+      </div>
+        <div id="nameBox">By <a href="http://www.twitter.com/jackdearlove">Jack Dearlove</a></div>
+      </div>
+    </div>
+</div>
+ 
+ 
+</body>
+</html>
