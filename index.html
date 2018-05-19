@@ -31,7 +31,7 @@ function checkAndSend(departureTime, from, to){
 
   var callURL = "https://api.tfl.gov.uk/Journey/JourneyResults/"+from+"/to/"+to+"?nationalSearch=true&date=20180521&time="+departureTime+"&timeIs=Departing&mode=national-rail%2C%20overground";
 
-  console.log(callURL);
+  //console.log(callURL);
 
        $.getJSON(callURL, function(result){
         
@@ -45,9 +45,9 @@ function checkAndSend(departureTime, from, to){
         var departureTimeTwo = processTimeArray(departureTimeTwoRaw);
         var departureTimeThree = processTimeArray(departureTimeThreeRaw);
 
-        console.log(departureTimeOne);
-        console.log(departureTimeTwo);
-        console.log(departureTimeThree);
+        //console.log(departureTimeOne);
+        //console.log(departureTimeTwo);
+        //console.log(departureTimeThree);
 
         var finalMessage = "Your new train times are... "+departureTimeOne+", "+departureTimeTwo+" and "+departureTimeThree;
 
@@ -2222,7 +2222,7 @@ function processTimeArray(rawTime){
       select: function( event, ui ) {
       //  log( "Selected: " + ui.item.label + " aka " + ui.item.id );
         endingStationSelected = ui.item.id;
-        console.log("ending station ID", endingStationSelected);
+        //console.log("ending station ID", endingStationSelected);
       }
     });
 
@@ -4335,7 +4335,7 @@ function processTimeArray(rawTime){
       select: function( event, ui ) {
         //log( "Selected: " + ui.item.label + " aka " + ui.item.id );
          startingStationSelected = ui.item.id;
-        console.log("starting station ID", startingStationSelected);
+        //console.log("starting station ID", startingStationSelected);
       }
     });
 
@@ -4783,7 +4783,7 @@ function processTimeArray(rawTime){
       select: function( event, ui ) {
       //  log( "Selected: " + ui.item.label + " aka " + ui.item.id );
         departureTimeSelected = ui.item.time;
-        console.log("departure time selected", departureTimeSelected);
+        //console.log("departure time selected", departureTimeSelected);
       }
     });
 
